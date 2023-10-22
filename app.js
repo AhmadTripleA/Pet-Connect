@@ -20,20 +20,12 @@ const User = mongoose.model('User', new mongoose.Schema({
   password: String,
 }));
 
-// Set up EJS as the view engine
-app.set('view engine', 'ejs');
-
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
-
-// Parse request body as JSON
-app.use(express.json());
 
 // Parse form data
 app.use(express.urlencoded({ extended: true }));
 
 // Log all incoming requests in simple format 
-app.use(morgan('Method=:method URL=:url Status=:status Time=:response-time ms - :date[web]'));
+app.use(morgan('Method=:method Endpoint=:url Status=:status Time=:response-time ms - :date[web]'));
 
 // DEBUGGING // Method used to debug how to decode JSON files on mobile 
 app.post('/debug', async (req, res) => {
@@ -67,7 +59,7 @@ app.post('/register', async (req, res) => {
   try {
     const user = new User({ name, email, password });
     await user.save();
-    //res.redirect('/'); // Redirect to the login/register page
+    //res.redirect('/'); Redirect to the login/register page
 
     res.status(200).send('success');
 
