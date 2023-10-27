@@ -1,7 +1,9 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
+const mongoose = require('mongoose'); // Database
+const morgan = require('morgan'); // logging
+const bodyParser = require('body-parser'); // JSON parsing
+const path = require('path'); // For working with file paths
+
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,6 +14,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/MRC', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Parse form data
 app.use(express.urlencoded({ extended: true }));
