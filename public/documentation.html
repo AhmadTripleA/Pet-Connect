@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Backend API Documentation</title>
+    <style>
+        /* Reset some default styles */
+        html,
+        body,
+        h1,
+        h2,
+        h3,
+        ul,
+        li,
+        code,
+        pre {
+            margin: 20px 0px;
+            padding: 0;
+        }
+
+        /* Set a background color and text color */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        /* Header styles */
+        h1 {
+            background-color: #0078d4;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Content container */
+        .container {
+            max-width: 50%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Section styles */
+        h2 {
+            background-color: #0078d4;
+            color: white;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+
+        /* List styles */
+        ul {
+            list-style: none;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        /* Code and pre styles */
+        code,
+        pre {
+            background-color: #f2f2f2;
+            color: black;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+        }
+
+        /* Add more styles for specific elements as needed */
+    </style>
+</head>
+
+<body>
+
+    <h1>Backend API Documentation</h1>
+
+    <div class="container">
+        <h1>API Base URL: <code>http://92.253.30.93:3459/</code></h2>
+
+            <h2>Register a New User</h2>
+
+            <ul>
+                <li><strong>Endpoint:</strong> <code>users/register</code></li>
+                <li><strong>HTTP Method:</strong> POST</li>
+                <li><strong>Description:</strong> Registers a new user. All new users receive a default profile picture.
+                </li>
+                <li><strong>Parameters:</strong>
+                    <ul>
+                        <li><code>name</code> (String): User's name.</li>
+                        <li><code>email</code> (String): User's email.</li>
+                        <li><code>password</code> (String): User's password.</li>
+                        <li><code>phoneNumber</code> (String): User's phone number.</li>
+                    </ul>
+                </li>
+                <li><strong>Request Example:</strong>
+                    <pre>
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "password": "your_password",
+    "phoneNumber": "123-456-7890"
+}
+        </pre>
+                </li>
+                <li><strong>Response:</strong>
+                    <ul>
+                        <li><strong>Success (200 OK):</strong>
+                            <pre>
+{
+    "message": "User registration successful."
+}
+                </pre>
+                        </li>
+                        <li><strong>Error (4xx/5xx):</strong>
+                            <pre>
+{
+    "error": "Registration failed. Please check your input."
+}
+                </pre>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h2>User Login</h2>
+
+            <ul>
+                <li><strong>Endpoint:</strong> <code>users/login</code></li>
+                <li><strong>HTTP Method:</strong> POST</li>
+                <li><strong>Description:</strong> Allows users to log in and retrieve their personal data.</li>
+                <li><strong>Parameters:</strong>
+                    <ul>
+                        <li><code>email</code> (String): User's email.</li>
+                        <li><code>password</code> (String): User's password.</li>
+                    </ul>
+                </li>
+                <li><strong>Request Example:</strong>
+                    <pre>
+{
+    "email": "johndoe@example.com",
+    "password": "your_password"
+}
+        </pre>
+                </li>
+                <li><strong>Response:</strong>
+                    <ul>
+                        <li><strong>Success (200 OK):</strong>
+                            <pre>
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "phoneNumber": "123-456-7890",
+    "profilePic": "http://92.253.30.93:28251/users/getProfilePic?email=johndoe@example.com"
+}
+                </pre>
+                        </li>
+                        <li><strong>Error (4xx/5xx):</strong>
+                            <pre>
+{
+    "error": "Login failed. Please check your credentials."
+}
+                </pre>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h2>Get User Information</h2>
+
+            <ul>
+                <li><strong>Endpoint:</strong> <code>users/getInfo</code></li>
+                <li><strong>HTTP Method:</strong> GET</li>
+                <li><strong>Description:</strong> Displays user's generic information, including the path to their
+                    profile
+                    picture.</li>
+                <li><strong>Parameters:</strong>
+                    <ul>
+                        <li><code>email</code> (String): User's email.</li>
+                    </ul>
+                </li>
+                <li><strong>Request Example:</strong>
+                    <pre>
+GET /users/getInfo?email=johndoe@example.com
+        </pre>
+                </li>
+                <li><strong>Response:</strong>
+                    <pre>
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "phoneNumber": "123-456-7890",
+    "profilePic": "http://92.253.30.93:28251/users/getProfilePic?email=johndoe@example.com"
+}
+        </pre>
+                </li>
+            </ul>
+
+            <h2>Get User Profile Picture</h2>
+
+            <ul>
+                <li><strong>Endpoint:</strong> <code>users/getProfilePic</code></li>
+                <li><strong>HTTP Method:</strong> GET</li>
+                <li><strong>Description:</strong> Displays the user's profile picture.</li>
+                <li><strong>Parameters:</strong>
+                    <ul>
+                        <li><code>email</code> (String): User's email.</li>
+                    </ul>
+                </li>
+                <li><strong>Request Example:</strong>
+                    <pre>
+{
+    "email": "johndoe@example.com"
+}
+        </pre>
+                </li>
+                <li><strong>Response:</strong>
+                    <p>The response will be the user's profile picture in image format.</p>
+                </li>
+            </ul>
+
+            <h2>Set User Profile Picture</h2>
+
+            <ul>
+                <li><strong>Endpoint:</strong> <code>users/setProfilePic</code></li>
+                <li><strong>HTTP Method:</strong> POST</li>
+                <li><strong>Description:</strong> Changes the user's profile picture. Use "multipart/form-data"
+                    encryption to send the request, including the email of the user and a new image.</li>
+                <li><strong>Parameters:</strong>
+                    <ul>
+                        <li><code>email</code> (String): User's email.</li>
+                        <li><code>profilePic</code> (Image File): New user profile picture.</li>
+                    </ul>
+                </li>
+                <li><strong>Request Example:</strong>
+                    <pre>
+{
+    "email": "johndoe@example.com",
+    "profilePic": "image_name.png"
+}
+        </pre>
+                </li>
+                <li><strong>Response:</strong>
+                    <ul>
+                        <li><strong>Success (200 OK):</strong>
+                            <pre>
+{
+    "message": "Profile picture updated successfully."
+}
+                </pre>
+                        </li>
+                        <li><strong>Error (4xx/5xx):</strong>
+                            <pre>
+{
+    "error": "Profile picture update failed. Please check your input."
+}
+                </pre>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h2 id="new-post">Create a New Post</h2>
+            <p><strong>Endpoint:</strong> /posts/newPost</p>
+            <p><strong>Method:</strong> POST</p>
+            <p><strong>Description:</strong> Create a new post in the database.</p>
+            <p><strong>Parameters:</strong></p>
+            <ul>
+                <li><code>email</code> (String) - The email of the user who is the author of the post.</li>
+                <li><code>title</code> (String) - The title of the post.</li>
+                <li><code>content</code> (String) - The content or body of the post.</li>
+                <li><code>tags</code> (Array of Strings) - An array of tags associated with the post for sorting and
+                    categorization.</li>
+                <li><code>images</code> (Array of Strings) - An array of image locations associated with the post.</li>
+            </ul>
+            <li><strong>Request Example:</strong>
+                <pre>
+{
+    "email": "user_email_here",
+    "title": "New Post Title",
+    "content": "This is the content of the new post.",
+    "tags": ["tag1", "tag2"],
+    "images": ["image1.jpg", "image2.jpg"]
+}
+    </pre>
+            </li>
+            <li><strong>Response:</strong>
+                <ul>
+                    <li><strong>Success (200 OK):</strong>
+                        <pre>
+{
+    "message": "New post created successfully."
+}
+            </pre>
+                    </li>
+                    <li><strong>Error (4xx/5xx):</strong>
+                        <pre>
+{
+    "error": "Failed to create the new post. Please check your input."
+}
+            </pre>
+                    </li>
+                </ul>
+            </li>
+    </div>
+
+    <!-- Add documentation for other endpoints -->
+
+</body>
+
+</html>

@@ -1,7 +1,8 @@
 const User = require('../Models/userModel');
+const Post = require('../Models/postModel');
 const bcrypt = require('bcrypt'); // For hashing passwords
 const path = require('path'); // For working with file paths
-const imagesAddress = path.join(__dirname, '../public/images');
+const { imgPath } = require('../middlewares/imgStorage');
 
 exports.register = async (req, res) => {
     try {
@@ -21,7 +22,7 @@ exports.register = async (req, res) => {
         // Hash the password
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        const defaultPic = path.join(imagesAddress, 'default_user_icon.png');
+        const defaultPic = path.join(imgPath, 'default_user_icon.png');
 
         const user = new User({
             name,
@@ -131,7 +132,7 @@ exports.setProfilePic = async (req, res) => {
 
     console.log(req.body);
 
-    console.log(`Path is: ${imagesAddress}`);
+    console.log(`Path is: ${imgPath}`);
 
     console.log(`file name is: ${req.file.filename}`);
     try {
@@ -141,11 +142,18 @@ exports.setProfilePic = async (req, res) => {
         }
 
         // Set new profile pic name
-        const newProfileImage = path.join(imagesAddress, req.file.filename);
+        const newProfileImage = path.join(imgPath, req.file.filename);
         console.log(`new target is ${newProfileImage}`);
 
-        // Check if email exists
-        const user = await User.updateOne({ email: req.body.email }, { profilePic: newProfileImage });
+        const user = await User.findOne({ email: req.body.email });
+
+        if (!user) {
+            console.log('This User Doesnt Exist in DB');
+            return res.status(404).json({ Error: 'This Email Doesnt Exist in DB' });
+        }
+
+        // Update User's Profile Pic
+        await User.updateOne({ email: req.body.email }, { profilePic: newProfileImage });
 
         // Checks if user document has changed in the Database
         if (user.nModified === 0) {
@@ -154,16 +162,35 @@ exports.setProfilePic = async (req, res) => {
             console.log('Document Found; User Updated');
         }
 
-        if (!user) {
-            console.log('This User Doesnt Exist in DB');
-            return res.status(404).json({ Error: 'This Email Doesnt Exist in DB' });
-        }
-
         console.log("Profile Pic Updated Successfully!");
         return res.status(200).json({ Message: "Profile Pic Updated Successfully!" });
 
     } catch (err) {
         console.error(err.message);
         return res.status(400).json({ Error: err.message });
+    }
+}
+
+exports.getPosts = async (req, res) => {
+    try {
+
+        const { email } = req.body;
+        const user = await User.findOne({ email: email });
+        console.log(user);
+
+        if (!user) {
+            return res.status(404).json({ Error: 'No User found' });
+        } else if (user.postID === 0) {
+            return res.status(404).json({ Error: 'This User Has No Posts' });
+        }
+
+        // TODO: Add authorization here
+        const posts = Post.find({user: user._id});
+
+        res.status(200).json(posts);
+
+    } catch (err) {
+        console.log(err.message);
+        res.status(400).json({ error: err.message });
     }
 }

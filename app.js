@@ -4,7 +4,6 @@ const morgan = require('morgan'); // logging
 const bodyParser = require('body-parser'); // JSON parsing
 const path = require('path'); // For working with file paths
 
-
 const app = express();
 app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
@@ -24,6 +23,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('Method=:method Endpoint=:url Status=:status Time=:response-time ms - :date[web]'));
 
 app.use('/users', require('./Routers/userRouter'));
+app.use('/posts', require('./Routers/postRouter'));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/', 'documentation.html'));
+});
 
 // Start the server
 app.listen(port, () => {
