@@ -78,12 +78,12 @@
     <h1>Backend API Documentation</h1>
 
     <div class="container">
-        <h1>API Base URL: <code>http://92.253.30.93:3459/</code></h2>
+        <h1>API Base URL: <code>http://86.108.32.149:54941/</code></h2>
 
             <h2>Register a New User</h2>
 
             <ul>
-                <li><strong>Endpoint:</strong> <code>users/register</code></li>
+                <li><strong>Endpoint:</strong> <code> /users/register</code></li>
                 <li><strong>HTTP Method:</strong> POST</li>
                 <li><strong>Description:</strong> Registers a new user. All new users receive a default profile picture.
                 </li>
@@ -125,48 +125,39 @@
                 </li>
             </ul>
 
-            <h2>User Login</h2>
+            <!-- Add documentation for other endpoints -->
 
-            <ul>
-                <li><strong>Endpoint:</strong> <code>users/login</code></li>
-                <li><strong>HTTP Method:</strong> POST</li>
-                <li><strong>Description:</strong> Allows users to log in and retrieve their personal data.</li>
-                <li><strong>Parameters:</strong>
-                    <ul>
-                        <li><code>email</code> (String): User's email.</li>
-                        <li><code>password</code> (String): User's password.</li>
-                    </ul>
-                </li>
-                <li><strong>Request Example:</strong>
-                    <pre>
+            <h2 id="new-post">Get All Users</h2>
+
+            <p><strong>Endpoint:</strong><code> /users/getAllUsers</code></p>
+            <p><strong>Method:</strong> GET</p>
+            <p><strong>Description:</strong> Returns an array of all users.</p>
+            <p><strong>Parameters: NO PARAMETERS</strong></p>
+
+            <li><strong>Response:</strong>
+                <ul>
+                    <li><strong>Success (200 OK):</strong>
+                        <pre>
 {
-    "email": "johndoe@example.com",
-    "password": "your_password"
+"_id": "6542c7e19b8540350bd44aa3",
+"name": "we",
+"email": "we@gmail.com",
+"password": "$2b$10$/K5gogOPFlk67X8fS3JPZuOGaNmJn6Iy5uOk4YnYOC07pq6JYhNKm",
+"phoneNumber": 56414,
+"profilePic": "Location\\uploads\\images\\default_user_icon.png",
+"__v": 0
 }
-        </pre>
-                </li>
-                <li><strong>Response:</strong>
-                    <ul>
-                        <li><strong>Success (200 OK):</strong>
-                            <pre>
+</pre>
+                    </li>
+                    <li><strong>Error (4xx/5xx):</strong>
+                        <pre>
 {
-    "name": "John Doe",
-    "email": "johndoe@example.com",
-    "phoneNumber": "123-456-7890",
-    "profilePic": "http://92.253.30.93:28251/users/getProfilePic?email=johndoe@example.com"
+"error": "Failed to get users. We Don't know why"
 }
-                </pre>
-                        </li>
-                        <li><strong>Error (4xx/5xx):</strong>
-                            <pre>
-{
-    "error": "Login failed. Please check your credentials."
-}
-                </pre>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+</pre>
+                    </li>
+                </ul>
+            </li>
 
             <h2>Get User Information</h2>
 
@@ -263,7 +254,8 @@ GET /users/getInfo?email=johndoe@example.com
             </ul>
 
             <h2 id="new-post">Create a New Post</h2>
-            <p><strong>Endpoint:</strong> /posts/newPost</p>
+
+            <p><strong>Endpoint:</strong><code> /posts/newPost</code></p>
             <p><strong>Method:</strong> POST</p>
             <p><strong>Description:</strong> Create a new post in the database.</p>
             <p><strong>Parameters:</strong></p>
@@ -305,8 +297,6 @@ GET /users/getInfo?email=johndoe@example.com
                 </ul>
             </li>
     </div>
-
-    <!-- Add documentation for other endpoints -->
 
 </body>
 

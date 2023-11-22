@@ -1,7 +1,7 @@
 const Post = require('../Models/postModel');
 const User = require('../Models/userModel');
 const path = require('path');
-const { imgPath } = require('../middlewares/imgStorage');
+const { imgPath } = require('../middlewares/general');
 
 exports.newPost = async (req, res) => {
     try {
@@ -10,13 +10,9 @@ exports.newPost = async (req, res) => {
         // user selection here
         user = await User.findOne({ email: email });
 
-        if (!user) {
-            console.log('User not found');
-            return res.status(404).json({ Error: 'User not found' });
-        }
-
         const images = await req.files;
 
+        // if no images provided
         if (!images) {
             console.log("No Images Provided");
             return res.status(404).json({ Error: 'No Images Provided' });
@@ -53,6 +49,27 @@ exports.newPost = async (req, res) => {
 
         console.log('Post Added Successfully!');
         res.status(200).json({ message: 'Post Added Successfully!' });
+
+    } catch (err) {
+        console.log(err.message);
+        res.status(400).json({ error: err.message });
+    }
+}
+
+exports.getPosts = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email: email });
+
+        if (!user) {
+            return res.status(404).json({ Error: 'No User found' });
+        }
+
+        // TODO: Add authorization here
+
+        const posts = await Post.find({ user: user._id });
+
+        res.status(200).json(posts);
 
     } catch (err) {
         console.log(err.message);

@@ -1,10 +1,12 @@
 const express = require('express');
 const postController = require('../Controllers/postController');
-// uploadImg is used to store any image(s) inside uploads/images, also parses form text. 
-const { uploadImg } = require('../middlewares/imgStorage');
+const { uploadImg } = require('../middlewares/general');
+const { parseText } = require('../middlewares/general');
+const { validateUser } = require('../middlewares/userAuth');
 
 const router = express.Router();
 
-router.post('/newPost', uploadImg.array('images', 10), postController.newPost);
+router.post('/newPost', validateUser, uploadImg.array('images', 10), postController.newPost);
+router.get('/getPosts', validateUser, parseText.none(), postController.getPosts);
 
 module.exports = router;

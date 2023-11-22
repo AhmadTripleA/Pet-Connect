@@ -4,17 +4,18 @@ const postSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', // Reference to the User model
+        default: {}
     },
     title: String,
     content: String,
     date: Date,
     images: {
-        type: [String], // Defines an array of image locations
-        default: [], // Default value is an empty array
+        type: [String], 
+        default: [],
     },
     tags: {
-        type: [String], // Defines an array of tags
-        default: [], // Default value is an empty array
+        type: [String], 
+        default: [], 
     },
 });
 
