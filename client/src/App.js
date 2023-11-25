@@ -1,21 +1,38 @@
 import React, { useEffect, useState } from 'react'
+/*import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import login from "./components/login"
+import { Router } from 'express';
+import { Link } from 'react-router-dom';*/
+import SignUpForm from "./components/SignUpForm"
 
 function App() {
-  const [backendData, setBackendData] = useState([{}])
+
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch("/api").then(
-      response => response.json()
-    ).then(
-      data => {
-        setBackendData(data)
-      }
-    )
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then((res) => res.json())
+      .then((data) => setUsers(data))
+    return () => { return false }
   }, [])
-  return (
-    <div>
 
-    </div>
+  useEffect(() => {
+    if (users.length > 0) {
+      console.log(users)
+    }
+
+  }, [users])
+
+  return (
+    <>
+      <SignUpForm />
+      {users.map(
+        user =>
+          <h3 key={user.id}>
+            {user.name}
+          </h3>
+      )}
+    </>
   )
 }
 
