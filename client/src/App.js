@@ -3,29 +3,29 @@ import React, { useEffect, useState } from 'react'
 import login from "./components/login"
 import { Router } from 'express';
 import { Link } from 'react-router-dom';*/
-import SignUpForm from "./components/SignUpForm"
+import axios from 'axios';
+
 
 function App() {
 
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then((res) => res.json())
-      .then((data) => setUsers(data))
-    return () => { return false }
-  }, [])
+    axios.get('http://92.253.29.136:4462/users/getAllUsers')
+      .then((response) => {
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching data: ', error);
+      });
 
-  useEffect(() => {
-    if (users.length > 0) {
-      console.log(users)
-    }
+    return () => { return false };
+  }, []);
 
-  }, [users])
 
   return (
     <>
-      <SignUpForm />
+
       {users.map(
         user =>
           <h3 key={user.id}>

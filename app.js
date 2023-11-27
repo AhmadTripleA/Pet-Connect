@@ -6,7 +6,7 @@ const path = require('path'); // For working with file paths
 const { resMsg, parseText } = require('./middlewares/general');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // Connect to MongoDB (replace 'your-database-name' with your database name)
 mongoose.connect('mongodb://127.0.0.1:27017/MRC', {
