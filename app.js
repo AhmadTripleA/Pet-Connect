@@ -4,6 +4,7 @@ const morgan = require('morgan'); // logging
 const bodyParser = require('body-parser'); // JSON parsing
 const path = require('path'); // For working with file paths
 const { resMsg, parseText } = require('./middlewares/general');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,6 +16,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/MRC', {
 });
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 

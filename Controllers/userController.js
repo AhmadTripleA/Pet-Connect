@@ -1,7 +1,7 @@
 const User = require('../Models/userModel');
 const bcrypt = require('bcrypt'); // For hashing passwords
 const path = require('path'); // For working with file paths
-const { imgPath } = require('../middlewares/general');
+const { imgPath, resMsg } = require('../middlewares/general');
 const { resErr } = require('../middlewares/general');
 
 exports.register = async (req, res) => {
@@ -88,25 +88,31 @@ exports.setProfilePic = async (req, res) => {
 
     const img = req.file;
     console.log(`file name is: ${img.filename}`);
+
+    const user = await User.findOne({
+        email: req.body.email
+    });
+
     try {
         if (!img) {
             resErr("No file found in request", 400, res);
         }
+        if (!user) {
+            resErr("This User Doesn't Exist in Database", 400, res);
+        }
 
         // Set new profile pic name
-        const newProfileImage = path.join(imgPath, img.filename);
-        console.log(`new target is ${newProfileImage}`);
+        const newImg = path.join(imgPath, img.filename);
+        console.log(`new target is ${newImg}`);
 
         // Update User's Profile Pic
-        await User.updateOne({ email: req.body.email }, { profilePic: newProfileImage });
+        await User.updateOne({ email: req.body.email }, { profilePic: newImg });
 
         console.log("Profile Pic Updated Successfully!");
         return res.status(200).json({ Message: "Profile Pic Updated Successfully!" });
 
     } catch (err) {
-        console.log('===== SET PROFILE PIC ERROR =====')
         resErr(err.message, 400, res);
-        console.log('===== END OF PROFILE PIC ERROR =====');
         return;
     }
 }
@@ -122,3 +128,18 @@ exports.getAllUsers = async (req, res) => {
         resErr("Something went wrong :(");
     }
 }
+
+// exports.images = async (req, res) => {
+
+//     const img = req.files;
+
+//     try {
+//         if (!img) {
+//             resErr("No files found in request", 400, res);
+//         }
+//         resMsg("All Images added succesfully", 200, res);
+
+//     } catch (err) {
+//         return resErr(err.message, 400, res);
+//     }
+// }

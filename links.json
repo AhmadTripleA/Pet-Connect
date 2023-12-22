@@ -1,0 +1,4 @@
+{
+    "getAllUsers": "http://92.253.29.136:4462/users/getAllUsers",
+    "GetThisIP": "http://92.253.29.136:4462/users/getUserIP"
+}
