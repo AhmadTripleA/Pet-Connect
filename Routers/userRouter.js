@@ -1,16 +1,14 @@
 const express = require('express');
-const userController = require('../Controllers/userController');
-const { uploadImg } = require('../middlewares/general');
+const controller = require('../Controllers/userController');
 const { parseText } = require('../middlewares/general');
-const { validateUser } = require('../middlewares/userAuth');
+const { authUser } = require('../middlewares/userAuth');
+// const { uploadImg } = require('../middlewares/general');
 
 const router = express.Router();
 
-router.post('/register', parseText.none(), userController.register);
-router.get('/getInfo', parseText.none(), validateUser, userController.getInfo);
-router.get('/getProfilePic', parseText.none(), userController.getProfilePic);
-router.post('/setProfilePic', uploadImg.single('file'), userController.setProfilePic);
-router.post('/Images', uploadImg.array('file'), userController.images);
-router.get('/getAllUsers', parseText.none(), userController.getAllUsers);
+router.get('/getUser', parseText.none(), authUser, controller.getUser);
+router.get('/getPets', parseText.none(), authUser, controller.getPets);
+router.post('/addUser', parseText.none(), controller.addAccount);
+router.post('/login', parseText.none(), controller.login);
 
 module.exports = router;

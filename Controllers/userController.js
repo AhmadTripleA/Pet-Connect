@@ -1,134 +1,123 @@
+const asyncErrorWrapper = require("express-async-handler")
 const User = require('../Models/userModel');
+const Pet = require('../Models/petModel');
 const bcrypt = require('bcrypt'); // For hashing passwords
-const path = require('path'); // For working with file paths
-const { imgPath, resMsg } = require('../middlewares/general');
 const { resErr } = require('../middlewares/general');
 
-exports.register = async (req, res) => {
-    try {
-        console.log(req.body);
+const addAccount = asyncErrorWrapper(async (req, res, next) => {
 
-        const { name, email, password, phoneNumber } = req.body;
+    const { name, email, password } = req.body;
 
-        const existingUser = await User.findOne({ email: email });
+    const existingUser = await User.findOne({ email: email });
 
-        // check if user email already exists in database
-        if (existingUser) {
-            console.log("User exists already");
-            return res.status(409).json(({ error: 'User Already Exists.' }));
-        }
-
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const defaultPic = path.join(imgPath, 'default_user_icon.png');
-
-        const user = new User({
-            name,
-            email,
-            password: hashedPassword,
-            phoneNumber,
-            profilePic: defaultPic
-        });
-
-        // add user to DB
-        await user.save();
-
-        console.log(`New User: ${name}, ${email}`);
-        res.status(201).json({ message: 'User Created Successfully!' })
-
-    } catch (err) {
-        console.error(err);
-        res.status(400).json({ error: err.message })
+    // check if user email already exists in database
+    if (existingUser) {
+        resErr("This Email already exists", 400, res);
     }
-}
 
-exports.getInfo = async (req, res) => {
-    try {
+    const defaultPic = 'default_user_icon.png';
 
-        const user = await User.findOne({
-            email: req.body.email
-        });
-
-        // Return user in JSON
-        res.status(200).json({
-            name: user.name,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            profilePic: user.profilePic,
-        });
-
-        console.log(`User ${user.name} Found & Delieverd!!`);
-
-    } catch (error) {
-        console.error(`Error: ${erorr.message}`)
-        res.status(500).json({ error: error.message });
-    }
-}
-
-exports.getProfilePic = async (req, res) => {
-    try {
-        // Validates user by email
-        const user = await User.findOne({
-            email: req.body.email
-        });
-
-        if (user && user.profilePic) {
-            console.log("Image Sent!")
-            res.status(200).sendFile(user.profilePic);
-        } else {
-            res.status(404).json({ error: 'Profile picture not found' });
-        }
-
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-};
-
-exports.setProfilePic = async (req, res) => {
-
-    const img = req.file;
-    console.log(`file name is: ${img.filename}`);
-
-    const user = await User.findOne({
-        email: req.body.email
+    const user = new User({
+        name,
+        email,
+        password,
+        profilePic: defaultPic
     });
 
-    try {
-        if (!img) {
-            resErr("No file found in request", 400, res);
-        }
-        if (!user) {
-            resErr("This User Doesn't Exist in Database", 400, res);
-        }
+    // save user to DB
+    await user.save();
 
-        // Set new profile pic name
-        const newImg = path.join(imgPath, img.filename);
-        console.log(`new target is ${newImg}`);
+    console.log(`New User "${user.name}" Added - Email: ${user.email}`);
+    res.status(200).json({ userID: user._id });
+})
 
-        // Update User's Profile Pic
-        await User.updateOne({ email: req.body.email }, { profilePic: newImg });
+const login = asyncErrorWrapper(async (req, res, next) => {
 
-        console.log("Profile Pic Updated Successfully!");
-        return res.status(200).json({ Message: "Profile Pic Updated Successfully!" });
+    // Find the user in the database based on the email
+    const user = await User.findOne({ email: req.body.email });
 
-    } catch (err) {
-        resErr(err.message, 400, res);
-        return;
+    // Check if the user exists
+    if (!user) {
+        return resErr("User not found", 404, res);
     }
-}
+    // Compare the provided password with the hashed password in the database
+    const isPasswordMatch = await bcrypt.compare(req.body.password, user.password);
 
-exports.getAllUsers = async (req, res) => {
-    try {
-        const users = await User.find();
-
-        console.log("All Users Sent Successfully!");
-        return res.status(200).json(users);
-
-    } catch (err) {
-        resErr("Something went wrong :(");
+    if (!isPasswordMatch) {
+        return resErr("Invalid password", 401, res);
     }
-}
 
+    res.status(200).json({ userID: user._id });
+})
+
+const getUser = asyncErrorWrapper(async (req, res, next) => {
+
+    const user = User.findById(req.body.userID);
+
+    return res.status(200).json(user);
+})
+
+const getPets = asyncErrorWrapper(async (req, res, next) => {
+
+    const user = req.body.userID;
+
+    console.log(user)
+
+    const pets = await Pet.find({ owner: user});
+    
+    return res.status(200).json(pets);
+})
+
+// exports.getProfilePic = async (req, res) => {
+//     try {
+//         // Validates user by email
+//         const user = await User.findOne({
+//             email: req.body.email
+//         });
+
+//         if (user && user.profilePic) {
+//             console.log("Image Sent!")
+//             res.status(200).sendFile(user.profilePic);
+//         } else {
+//             res.status(404).json({ error: 'Profile picture not found' });
+//         }
+
+//     } catch (error) {
+//         res.status(400).json({ error: error.message });
+//     }
+// };
+// exports.setProfilePic = async (req, res) => {
+
+//     const img = req.file;
+//     console.log(`file name is: ${img.filename}`);
+
+//     const user = await User.findOne({
+//         email: req.body.email
+//     });
+
+//     try {
+//         if (!img) {
+//             resErr("No file found in request", 400, res);
+//         }
+//         if (!user) {
+//             resErr("This User Doesn't Exist in Database", 400, res);
+//         }
+
+//         // Set new profile pic name
+//         const newImg = path.join(imgPath, img.filename);
+//         console.log(`new target is ${newImg}`);
+
+//         // Update User's Profile Pic
+//         await User.updateOne({ email: req.body.email }, { profilePic: newImg });
+
+//         console.log("Profile Pic Updated Successfully!");
+//         return res.status(200).json({ Message: "Profile Pic Updated Successfully!" });
+
+//     } catch (err) {
+//         resErr(err.message, 400, res);
+//         return;
+//     }
+// }
 // exports.images = async (req, res) => {
 
 //     const img = req.files;
@@ -143,3 +132,10 @@ exports.getAllUsers = async (req, res) => {
 //         return resErr(err.message, 400, res);
 //     }
 // }
+
+module.exports = {
+    addAccount,
+    login,
+    getPets,
+    getUser
+}

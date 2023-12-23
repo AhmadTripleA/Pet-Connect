@@ -1,23 +1,45 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to the User model
-        default: {}
+    owner: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        required: true
     },
-    title: String,
-    content: String,
-    date: Date,
-    images: {
-        type: [String], 
-        default: [],
+    title: {
+        type: String,
     },
-    tags: {
-        type: [String], 
-        default: [], 
+    content: {
+        type: String,
     },
-});
+    image: {
+        type: String,
+        default: "post.png"
+    },
+    pets: [{
+        type: mongoose.Schema.ObjectId,
+        ref: "Pet",
+        default: []
+    }],
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    likes: {
+        type: Number,
+        default: 0
+    },
+    commentors: [{
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        default: []
+    }],
+    comments: [{
+        type: mongoose.Schema.ObjectId, 
+        ref: "Comment",
+        default: []
+    }],
+}, { timestamps: true });
 
 const Post = mongoose.model("post", postSchema);
 
