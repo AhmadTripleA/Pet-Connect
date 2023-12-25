@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-    owner: {
+    userID: {
         type: mongoose.Schema.ObjectId,
         ref: "User",
         required: true
@@ -16,11 +16,11 @@ const postSchema = new mongoose.Schema({
         type: String,
         default: "post.png"
     },
-    pets: [{
+    petID: {
         type: mongoose.Schema.ObjectId,
         ref: "Pet",
-        default: []
-    }],
+        default: {}
+    },
     date: {
         type: Date,
         default: Date.now
@@ -41,6 +41,6 @@ const postSchema = new mongoose.Schema({
     }],
 }, { timestamps: true });
 
-const Post = mongoose.model("post", postSchema);
+const Post = mongoose.model("Post", postSchema);
 
 module.exports = Post;

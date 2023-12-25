@@ -6,8 +6,8 @@ const { authUser } = require('../middlewares/userAuth');
 
 const router = express.Router();
 
-router.get('/getUser', parseText.none(), authUser, controller.getUser);
-router.get('/getPets', parseText.none(), authUser, controller.getPets);
+router.post('/getUser', parseText.none(), authUser, controller.getUser);
+router.post('/getPets', parseText.none(), authUser, controller.getPets);
 router.post('/addUser', parseText.none(), controller.addAccount);
 router.post('/login', parseText.none(), controller.login);
 

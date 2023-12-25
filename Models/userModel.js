@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt'); // For hashing passwords
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     },
     profilePic: {
         type: String,
-        default: "profilePic.png"
+        default: "post.png"
     },
     email: {
         type: String,
@@ -43,6 +43,6 @@ userSchema.pre("save", async function (next) {
 
 })
 
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

@@ -6,6 +6,7 @@ const path = require('path'); // For working with file paths
 const cors = require('cors'); // for sending shit to frontend (React) idk tbh
 const dotenv = require("dotenv"); // for handling config environment files
 const customErrorHandler = require('./middlewares/errors/customErrorHandler'); 
+const { imgPath } = require('./middlewares/general');
 
 dotenv.config({
   path:  './config/config.env'
@@ -20,7 +21,9 @@ mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true,
 });
 
+// Express static serving routes
 app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/uploads/images', express.static(imgPath));
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,6 +38,8 @@ mongoose.models = {};
 app.use('/users', require('./Routers/userRouter'));
 app.use('/posts', require('./Routers/postRouter'));
 app.use('/pets', require('./Routers/petRouter'));
+app.use('/articles', require('./Routers/articleRouter'));
+
 
 // this middleware takes whatever errors thrown during runtime and logs them
 app.use(customErrorHandler);

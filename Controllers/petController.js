@@ -7,7 +7,7 @@ const { resErr, deleteImageFile } = require('../middlewares/general');
 const addPet = asyncErrorWrapper(async (req, res, next) => {
     const { userID, name, type, breed, gender, birthDate } = req.body;
 
-    const img = await req.file.filename;
+    const image = await req.file.filename;
 
     // we authenticate user here so we delete images if auth fails
     const user = await User.findById(userID);
@@ -20,13 +20,13 @@ const addPet = asyncErrorWrapper(async (req, res, next) => {
     }
 
     const pet = new Pet({
-        owner: userID,
+        userID,
         name,
         type,
         breed,
         gender,
         birthDate,
-        image: img
+        image
     });
 
     // save user to DB

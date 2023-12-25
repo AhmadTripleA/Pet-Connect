@@ -1,27 +1,27 @@
 const asyncErrorWrapper = require("express-async-handler")
 const User = require('../Models/userModel');
-const Post = require('../Models/postModel');
-const { resMsg, resErr, imgPath } = require('../middlewares/general');
+const { resMsg, resErr } = require('../middlewares/general');
+const Article = require("../Models/articleModel");
 
-const addPost = asyncErrorWrapper(async (req, res, next) => {
+const addArticle = asyncErrorWrapper(async (req, res, next) => {
 
-    const { userID, title, content, petID } = req.body;
+    const { userID, title, content } = req.body;
 
     const image = await req.file.filename;
 
     console.log(image)
 
-    const post = new Post({
+    const article = new Article({
         userID,
         title,
         content,
-        petID,
         image
     });
 
-    await post.save();
+    await article.save();
 
-    resMsg("Post Added Successfully!", 200, res);
+    res.status(200).json({ userID: article._id })
+
 })
 
 const getAll = asyncErrorWrapper(async (req, res, next) => {
@@ -32,14 +32,12 @@ const getAll = asyncErrorWrapper(async (req, res, next) => {
         resErr("Authentication Failed", 400, res);
     }
 
-    const posts = await Post.find()
-    .populate('petID')
-    .populate('userID');
+    const articles = await Article.find();
 
-    res.status(200).json(posts);
+    res.status(200).json(articles);
 })
 
 module.exports = {
-    addPost,
+    addArticle,
     getAll
 }

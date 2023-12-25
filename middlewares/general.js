@@ -3,7 +3,6 @@ const path = require('path');
 const fs = require("fs")
 const imgPath = path.join(__dirname, '../uploads/images');
 
-
 function resMsg(Msg, code, res) {
     console.log((Msg));
     res.status(code).json({ Message: Msg });

@@ -47,14 +47,31 @@ const login = asyncErrorWrapper(async (req, res, next) => {
         return resErr("Invalid password", 401, res);
     }
 
-    res.status(200).json({ userID: user._id });
+    res.status(200).json({
+        userID: user._id,
+        name: user.name,
+        email: user.email
+    });
 })
 
 const getUser = asyncErrorWrapper(async (req, res, next) => {
 
-    const user = User.findById(req.body.userID);
+    const id = req.body.userID;
 
-    return res.status(200).json(user);
+    const user = await User.findById(id)
+
+    const data = {
+        userID: user._id,
+        name: user.name,
+        profilePic: user.profilePic,
+        email: user.email,
+        role: user.role,
+        petID: await Pet.find({ userID: user._id })
+    }
+
+    console.log(data)
+
+    res.status(200).json(data);
 })
 
 const getPets = asyncErrorWrapper(async (req, res, next) => {
@@ -63,8 +80,8 @@ const getPets = asyncErrorWrapper(async (req, res, next) => {
 
     console.log(user)
 
-    const pets = await Pet.find({ owner: user});
-    
+    const pets = await Pet.find({ userID: user });
+
     return res.status(200).json(pets);
 })
 
