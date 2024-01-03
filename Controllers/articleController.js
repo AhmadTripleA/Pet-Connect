@@ -1,18 +1,19 @@
 const asyncErrorWrapper = require("express-async-handler")
-const User = require('../Models/userModel');
-const { resMsg, resErr } = require('../middlewares/general');
+const Writer = require('../Models/writer');
 const Article = require("../Models/articleModel");
+const { resMsg, resErr } = require('../middlewares/general');
 
-const addArticle = asyncErrorWrapper(async (req, res, next) => {
+const add = asyncErrorWrapper(async (req, res, next) => {
 
-    const { userID, title, content } = req.body;
+    const { writerID, title, content } = req.body;
 
     const image = await req.file.filename;
 
-    console.log(image)
+    const writer = await Writer.findById(writerID)
 
     const article = new Article({
-        userID,
+        writerID,
+        author : writer.name,
         title,
         content,
         image
@@ -20,17 +21,29 @@ const addArticle = asyncErrorWrapper(async (req, res, next) => {
 
     await article.save();
 
-    res.status(200).json({ userID: article._id })
+    console.log(`Article (${title}) Added Successfully!`);
 
+    res.status(200).json({ articleID: article._id });
+})
+
+const remove = asyncErrorWrapper(async (req, res, next) => {
+
+    const { articleID } = req.body.articleID;
+
+    const article = await Article.findById(articleID);
+
+    if (!article) {
+        return resErr('This Article Doesnt Exist', 404, res);
+    }
+
+    const title = article.title;
+
+    await Article.findByIdAndDelete(articleID);
+
+    resMsg(`Article (${title}) Deleted Successfully!`, 200, res);
 })
 
 const getAll = asyncErrorWrapper(async (req, res, next) => {
-
-    const user = await User.findById(req.body.userID);
-
-    if (!user) {
-        resErr("Authentication Failed", 400, res);
-    }
 
     const articles = await Article.find();
 
@@ -38,6 +51,7 @@ const getAll = asyncErrorWrapper(async (req, res, next) => {
 })
 
 module.exports = {
-    addArticle,
+    add,
+    remove,
     getAll
 }

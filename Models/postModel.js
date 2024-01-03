@@ -25,12 +25,17 @@ const postSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    tags: [{
+    tag: {
         type: String,
-        enum: ["social", "trading", "adoption", "lost"],
-        default: ["social"],
+        enum: ["social", "trading", "adoption", "lost", "mating"],
+        default: "social",
         required: true,
-    }],
+    },
+    price: {
+        type: Number,
+        required: false,
+        getters: true
+    },
     likes: {
         type: Number,
         default: 0
@@ -41,10 +46,15 @@ const postSchema = new mongoose.Schema({
         default: []
     }],
     comments: [{
-        type: mongoose.Schema.ObjectId, 
+        type: mongoose.Schema.ObjectId,
         ref: "Comment",
         default: []
     }],
+    state: {
+        type: String,
+        enum: ["active", "deleted", "archived"],
+        default: "active"
+    }
 }, { timestamps: true });
 
 const Post = mongoose.model("Post", postSchema);

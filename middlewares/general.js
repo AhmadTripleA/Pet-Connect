@@ -10,7 +10,7 @@ function resMsg(Msg, code, res) {
 
 function resErr(errorMsg, code, res) {
     console.log((errorMsg));
-    return res.status(code).json({ Error: errorMsg });
+    res.status(code).json({ Error: errorMsg });
 }
 
 const imgStorage = multer.diskStorage({

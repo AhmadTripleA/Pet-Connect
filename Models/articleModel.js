@@ -2,10 +2,15 @@ const mongoose = require("mongoose")
 
 const articleSchema = new mongoose.Schema({
 
-    userID: {
+    writerID: {
         type: mongoose.Schema.ObjectId,
-        ref: "User",
+        ref: "Writer",
         required: true
+    },
+    author: {
+        type: String,
+        required: true,
+        default: "Pet Connect"
     },
     title: {
         type: String,

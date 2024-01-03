@@ -7,13 +7,15 @@ async function authUser(req, res, next) {
         const user = await User.findById(req.body.userID);
 
         if (!user) {
-            resErr("This User Doesnt Exist in DB (userAuth)", 404, res);
+            return resErr("This User Doesnt Exist in DB (userAuth)", 404, res);
         }
+
+        req.user = user;
 
         next();
 
     } catch (err) {
-        resErr(err.message, 400);
+        return resErr(err.message, 400, res);
     }
 }
 

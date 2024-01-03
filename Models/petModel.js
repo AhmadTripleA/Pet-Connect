@@ -3,8 +3,7 @@ const mongoose = require("mongoose")
 const PetSchema = new mongoose.Schema({
     userID: {
         type: mongoose.Schema.ObjectId,
-        ref: "User",
-        required: true
+        ref: "User"
     },
     name: {
         type: String,
@@ -30,6 +29,11 @@ const PetSchema = new mongoose.Schema({
     image: {
         type: String,
         default: "pet.png"
+    },
+    state: {
+        type: String,
+        enum: ["active", "deleted", "archived"],
+        default: "active"
     }
 
 }, { timestamps: true })

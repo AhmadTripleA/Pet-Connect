@@ -1,14 +1,10 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const userSchema = new mongoose.Schema({
+const writerSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, "Please provide a name"]
-    },
-    profilePic: {
-        type: String,
-        default: "post.png"
     },
     email: {
         type: String,
@@ -20,25 +16,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         minlength: [4, "Please provide a password with min length : 4 "],
         required: [true, "Please provide a password"],
-    },
-    role: {
-        type: String,
-        enum: ["user", "admin", "writer"],
-        default: "user"
-    },
-    phone: {
-        type: Number,
-        default: 0
-    },
-    state: {
-        type: String,
-        enum: ["active", "deleted", "archived", "banned"],
-        default: "active"
     }
 }, { timestamps: true });
 
 // executes this function before "save()" as a middleware
-userSchema.pre("save", async function (next) {
+writerSchema.pre("save", async function (next) {
 
     if (!this.isModified("password")) {
         next()
@@ -52,6 +34,6 @@ userSchema.pre("save", async function (next) {
 
 })
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("Writer", writerSchema);
 
 module.exports = User;
