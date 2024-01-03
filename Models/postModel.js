@@ -25,6 +25,12 @@ const postSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    tags: [{
+        type: String,
+        enum: ["social", "trading", "adoption", "lost"],
+        default: ["social"],
+        required: true,
+    }],
     likes: {
         type: Number,
         default: 0
