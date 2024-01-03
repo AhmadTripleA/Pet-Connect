@@ -1,5 +1,5 @@
 const { resErr, resMsg } = require('../middlewares/general');
-const Chat = require('../Models/chatModel');
+const Chat = require('../Models/chat');
 
 exports.newChat = async (req, res) => {
     try {

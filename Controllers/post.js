@@ -1,6 +1,6 @@
 const asyncErrorWrapper = require("express-async-handler")
 const { resMsg, resErr } = require('../middlewares/general');
-const Post = require('../Models/postModel');
+const Post = require('../Models/post');
 
 const addPost = asyncErrorWrapper(async (req, res, next) => {
 

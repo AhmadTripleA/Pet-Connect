@@ -1,7 +1,7 @@
 const asyncErrorWrapper = require("express-async-handler")
-const User = require('../Models/userModel');
-const Pet = require('../Models/petModel');
-const Post = require('../Models/postModel');
+const User = require('../Models/user');
+const Pet = require('../Models/pet');
+const Post = require('../Models/post');
 const bcrypt = require('bcrypt'); // For hashing passwords
 const { resErr, resMsg, deleteImageFile } = require('../middlewares/general');
 

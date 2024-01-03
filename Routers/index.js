@@ -2,10 +2,10 @@ const express = require("express")
 
 const router = express.Router()
 
-const userRoute = require("./userRouter")
-const postsRoute = require("./postRouter")
-const articlesRoute = require("./articleRouter")
-const petsRoute = require("./petRouter")
+const userRoute = require("./user")
+const postsRoute = require("./post")
+const articlesRoute = require("./article")
+const petsRoute = require("./pet")
 const writerRoute = require("./writer")
 
 router.use("/users", userRoute)

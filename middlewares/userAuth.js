@@ -1,4 +1,4 @@
-const User = require('../Models/userModel');
+const User = require('../Models/user');
 const { resErr } = require('./general');
 
 // Only checks if user exists in database by validating email

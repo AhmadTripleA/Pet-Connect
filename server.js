@@ -37,7 +37,7 @@ app.use(morgan('Method=:method Endpoint=:url Status=:status Time=:response-time 
 mongoose.models = {};
 
 // Index containing all the Routes
-app.use('/', require('./Routers/indexRouter'))
+app.use('/', require('./Routers/index'))
 
 // this middleware takes whatever errors thrown during runtime and logs them
 app.use(customErrorHandler);

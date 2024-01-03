@@ -1,5 +1,5 @@
 const express = require('express');
-const cont = require('../Controllers/postController');
+const cont = require('../Controllers/post');
 const { uploadImg, parseText } = require('../middlewares/general');
 const { authUser } = require('../middlewares/userAuth');
 

@@ -1,8 +1,8 @@
 const asyncErrorWrapper = require("express-async-handler")
-const User = require('../Models/userModel');
-const Pet = require('../Models/petModel');
+const User = require('../Models/user');
+const Pet = require('../Models/pet');
 const { resErr, deleteImageFile, resMsg } = require('../middlewares/general');
-const Post = require("../Models/postModel");
+const Post = require("../Models/post");
 
 const addPet = asyncErrorWrapper(async (req, res, next) => {
     const { userID, name, type, breed, gender, birthDate } = req.body;
