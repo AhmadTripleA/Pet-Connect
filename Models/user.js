@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     },
     profilePic: {
         type: String,
-        default: "post.png"
+        default: "default_user_icon.png"
     },
     email: {
         type: String,
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         minlength: [4, "Please provide a password with min length : 4 "],
-        required: [true, "Please provide a password"],
+        required: [true, "Please provide a password"]
     },
     role: {
         type: String,

@@ -7,24 +7,29 @@ const PetSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: [true, "Please provide a name for your pet"]
+        required: [true, "Please provide a name for your pet"],
+        default: "name"
     },
     type: {
         type: String,
         required: [true, "Please select your pet's type"],
-        enum: ["dog", "cat", "bird", "horse", "camel", "other"]
+        enum: ["dog", "cat", "bird", "horse", "camel", "other"],
+        default: "other"
     },
     breed: {
         type: String,
-        required: [true, "Please select your pet's breed"]
+        required: [true, "Please select your pet's breed"],
+        default: "breed"
     },
     gender: {
         type: String,
         required: [true, "Please select your pet's gender"],
-        enum: ["m", "f"]
+        enum: ["m", "f"],
+        default: 'm'
     },
     birthDate: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     image: {
         type: String,

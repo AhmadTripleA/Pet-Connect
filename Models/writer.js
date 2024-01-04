@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt');
 const writerSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, "Please provide a name"]
+        required: [true, "Please provide a name"],
+        default: "Writer Name"
     },
     email: {
         type: String,

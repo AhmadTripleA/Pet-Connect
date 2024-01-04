@@ -1,5 +1,33 @@
 const mongoose = require('mongoose');
 
+// Embedded Comment Schema
+const commentSchema = new mongoose.Schema({
+    userID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    name: {
+        type: String,
+        required: true,
+        default: "username"
+    },
+    content: {
+        type: String,
+        required: true,
+        default: "content"
+    },
+    profilePic: {
+        type: String,
+        required: true,
+        default: "default_user_icon.png"
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    }
+}, { timestamps: true });
+
 const postSchema = new mongoose.Schema({
     userID: {
         type: mongoose.Schema.ObjectId,
@@ -36,20 +64,15 @@ const postSchema = new mongoose.Schema({
         required: false,
         getters: true
     },
-    likes: {
-        type: Number,
-        default: 0
-    },
-    commentors: [{
+    likes: [{
         type: mongoose.Schema.ObjectId,
         ref: "User",
         default: []
     }],
-    comments: [{
-        type: mongoose.Schema.ObjectId,
-        ref: "Comment",
+    comments: {
+        type: [commentSchema],
         default: []
-    }],
+    },
     state: {
         type: String,
         enum: ["active", "deleted", "archived"],

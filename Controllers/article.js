@@ -4,26 +4,31 @@ const Article = require("../Models/article");
 const { resMsg, resErr } = require('../middlewares/general');
 
 const add = asyncErrorWrapper(async (req, res, next) => {
+    try {
+        const { writerID, title, content } = req.body;
 
-    const { writerID, title, content } = req.body;
+        const image = await req.file.filename;
 
-    const image = await req.file.filename;
+        const writer = await Writer.findById(writerID)
 
-    const writer = await Writer.findById(writerID)
+        const article = new Article({
+            writerID,
+            author: writer.name,
+            title,
+            content,
+            image
+        });
 
-    const article = new Article({
-        writerID,
-        author : writer.name,
-        title,
-        content,
-        image
-    });
+        await article.save();
 
-    await article.save();
+        console.log(`Article (${title}) Added Successfully!`);
 
-    console.log(`Article (${title}) Added Successfully!`);
+        res.status(200).json({ articleID: article._id });
+    } catch (err) {
+        deleteImageFile(req, req.file.filename)
+        resErr(`Error Creating Article - ${err}`, 400, res);
+    }
 
-    res.status(200).json({ articleID: article._id });
 })
 
 const remove = asyncErrorWrapper(async (req, res, next) => {

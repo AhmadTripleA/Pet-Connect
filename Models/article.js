@@ -16,9 +16,11 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide a title"],
         minlength: [4, "Please provide a title least 4 characters "],
+        default: "Article Title"
     },
     content: {
         type: String,
+        default: "Article Content"
     },
     image: {
         type: String,
@@ -27,6 +29,11 @@ const articleSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    state: {
+        type: String,
+        enum: ["active", "deleted", "archived"],
+        default: "active"
     }
 
 }, { timestamps: true }) // adds automated fields to DB to track modificiations

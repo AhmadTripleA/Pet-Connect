@@ -1,6 +1,7 @@
 const multer = require('multer');
 const path = require('path');
-const fs = require("fs")
+const fs = require("fs");
+
 const imgPath = path.join(__dirname, '../uploads/images');
 
 function resMsg(Msg, code, res) {
@@ -33,7 +34,7 @@ const deleteImageFile = (req, imageName) => {
         if (err) {
             console.error(`Error deleting file "${imageName}" - ${err}`);
         } else {
-            console.log(`File: "${imageName}" deleted successfully`);
+            console.log(`File Deleted Successfully:"${imageName}"`);
         }
     });
 }

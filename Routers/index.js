@@ -1,17 +1,19 @@
-const express = require("express")
+const express = require("express");
 
-const router = express.Router()
+const router = express.Router();
 
-const userRoute = require("./user")
-const postsRoute = require("./post")
-const articlesRoute = require("./article")
-const petsRoute = require("./pet")
-const writerRoute = require("./writer")
+const usersRoute = require("./user");
+const postsRoute = require("./post");
+const articlesRoute = require("./article");
+const petsRoute = require("./pet");
+const writersRoute = require("./writer");
+const adminsRoute = require("./admin");
 
-router.use("/users", userRoute)
-router.use("/posts", postsRoute)
-router.use("/pets", petsRoute)
-router.use("/articles", articlesRoute)
-router.use("/writers", writerRoute)
+router.use("/users", usersRoute);
+router.use("/posts", postsRoute);
+router.use("/pets", petsRoute);
+router.use("/articles", articlesRoute);
+router.use("/writers", writersRoute);
+router.use("/admins", adminsRoute);
 
-module.exports = router
+module.exports = router;
