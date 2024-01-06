@@ -10,11 +10,25 @@ const getAllUsers = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const getActiveUsers = asyncErrorWrapper(async (req, res, next) => {
-    const users = await User.find({ state: "active" });
+    const users = await User.find({ state: "active" })
+        .sort({ createdAt: -1 });
     res.status(200).json(users);
+})
+
+const getActivePosts = asyncErrorWrapper(async (req, res, next) => {
+    const posts = await Post.find({ state: "active" })
+        .sort({ createdAt: -1 });
+    res.status(200).json(posts);
+})
+
+const getAllPosts = asyncErrorWrapper(async (req, res, next) => {
+    const posts = await Post.find();
+    res.status(200).json(posts);
 })
 
 module.exports = {
     getAllUsers,
-    getActiveUsers
+    getActiveUsers,
+    getAllPosts,
+    getActivePosts,
 }

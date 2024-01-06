@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
 
 const articleSchema = new mongoose.Schema({
-
     writerID: {
         type: mongoose.Schema.ObjectId,
         ref: "Writer",
@@ -10,7 +9,7 @@ const articleSchema = new mongoose.Schema({
     author: {
         type: String,
         required: true,
-        default: "Pet Connect"
+        default: "أليفنا"
     },
     title: {
         type: String,

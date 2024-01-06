@@ -63,7 +63,7 @@ const addPhone = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const deletePhone = asyncErrorWrapper(async (req, res, next) => {
-    await User.findOneAndUpdate({ _id: req.user._id }, { phone: 0 });
+    await User.findOneAndUpdate({ _id: req.user._id }, { phone: "" });
     resMsg(`Phone Number Deleted from ${req.user.name}!`, 200, res);
 })
 
@@ -87,7 +87,8 @@ const login = asyncErrorWrapper(async (req, res, next) => {
         userID: user._id,
         name: user.name,
         email: user.email,
-        profilePic: user.profilePic
+        profilePic: user.profilePic,
+        phone: user.phone,
     });
 })
 

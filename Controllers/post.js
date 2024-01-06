@@ -2,10 +2,17 @@ const asyncErrorWrapper = require("express-async-handler")
 const { resMsg, resErr, deleteImageFile } = require('../middlewares/general');
 const Post = require('../Models/post');
 const User = require("../Models/user");
+const Pet = require("../Models/pet");
 
 const addPost = asyncErrorWrapper(async (req, res, next) => {
+    // Its important to use Try-Catch when deleting images
     try {
         const { userID, title, content, petID, tag, price } = req.body;
+
+        const pet = await Pet.findById(petID);
+        if (!pet) {
+            return resErr(`This Pet Does not Exist in Database`, 404, res);
+        }
 
         // Image Processing
         const image = await req.file.filename;
@@ -43,6 +50,16 @@ const addPost = asyncErrorWrapper(async (req, res, next) => {
         return resErr(`Error Adding Post - ${err}`, 400, res);
     }
 
+})
+const getPost = asyncErrorWrapper(async (req, res, next) => {
+    const post = await Post.findById(req.body.postID)
+        .populate('petID')
+        .populate('userID');
+
+    if ((!post) || post.state !== "active") {
+        return resErr(`This Post Does not Exist!`, 404, res);
+    }
+    res.status(200).json(post);
 })
 
 const getAll = asyncErrorWrapper(async (req, res, next) => {
@@ -109,26 +126,61 @@ const deletePost = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const addComment = asyncErrorWrapper(async (req, res, next) => {
-    const { postID, userID, content } = req.body;
+    const { postID, content } = req.body;
 
-    const user = await User.findById(userID);
+    try {
+        const post = await Post.findById(postID);
+
+        if (!post) {
+            return resErr(`This Post Doesn't Exist`, 404, res);
+        }
+
+        console.log(post);
+
+        const newComment = {
+            userID: req.user._id,
+            name: req.user.name,
+            content: content,
+            profilePic: req.user.profilePic,
+            date: Date.now(),
+        };
+
+        post.comments.push(newComment);
+        await post.save();
+
+        const updatedPost = await Post.findById(postID);
+        res.status(200).json(updatedPost);
+
+        console.log('Comment Added & Updated Post Delievered');
+    } catch (err) {
+        resErr(`Error adding comment - ${err.message}`, 400, res);
+    }
+})
+
+const deleteComment = asyncErrorWrapper(async (req, res, next) => {
+    const { postID, commentID } = req.body;
+
     const post = await Post.findById(postID);
-
-    if (!post) {
-        return resErr(`This Post Doesn't Exist`, 404, res);
+    if ((!post) || post.state !== "active") {
+        return resErr('This Post Does not Exist', 404, res);
     }
 
-    const newComment = {
-        userID: userID,
-        name: user.name,
-        content: content,
-        profilePic: user.profilePic
-    };
+    const comment = post.comments.find(comment => comment._id.toString() === commentID.toString());
+    if (!comment) {
+        return resErr('This Comment Does not Exist', 404, res);
+    }
 
-    post.comments.push(newComment);
-    await post.save();
+    console.log(`Comment Detected: ${comment.content} by ${comment.name}`);
 
-    resMsg(`New Comment By (${user.name}) Added Successfully!`, 200, res);
+    await Post.updateOne(
+        { _id: postID },
+        { $pull: { comments: { _id: commentID } } }
+    )
+
+    console.log(`Commented Deleted Successfully!`);
+
+    const updatedPost = await Post.findById(postID);
+    res.status(200).json(updatedPost);
 })
 
 const getComments = asyncErrorWrapper(async (req, res, next) => {
@@ -146,10 +198,39 @@ const getComments = asyncErrorWrapper(async (req, res, next) => {
     res.status(200).json(comments);
 })
 
+const likePost = asyncErrorWrapper(async (req, res, next) => {
+    const { userID, postID } = req.body;
+
+    const post = await Post.findById(postID);
+    if (!post || post.state !== "active") {
+        return resErr(`This Post Does not Exist`, 404, res);
+    }
+
+    const isLikedByUser = post.likes.find(user => user.toString() === userID.toString());
+    if (!isLikedByUser) {
+        // User has not liked, so add his like
+        await Post.updateOne(
+            { _id: postID },
+            { $addToSet: { likes: userID } }
+        );
+        return resMsg(`Added Like Successfully!`, 200, res);
+    } else {
+        // User has liked, so remove his like
+        await Post.updateOne(
+            { _id: postID },
+            { $pull: { likes: userID } }
+        );
+        return resMsg(`Removed Like Successfully!`, 200, res);
+    }
+})
+
 module.exports = {
     addPost,
     addComment,
+    deleteComment,
     getComments,
+    likePost,
+    getPost,
     getAll,
     getByTag,
     deletePost

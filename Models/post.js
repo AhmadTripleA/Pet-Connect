@@ -26,7 +26,7 @@ const commentSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-}, { timestamps: true });
+}, { timestamps: true },);
 
 const postSchema = new mongoose.Schema({
     userID: {
@@ -47,7 +47,6 @@ const postSchema = new mongoose.Schema({
     petID: {
         type: mongoose.Schema.ObjectId,
         ref: "Pet",
-        default: {}
     },
     date: {
         type: Date,
@@ -67,7 +66,7 @@ const postSchema = new mongoose.Schema({
     likes: [{
         type: mongoose.Schema.ObjectId,
         ref: "User",
-        default: []
+        default: [],
     }],
     comments: {
         type: [commentSchema],
