@@ -13,6 +13,9 @@ dotenv.config({
   path: './config/config.env'
 })
 
+const uri = `mongodb://${process.env.MONGO_URI}`;
+console.log(uri);
+
 const app = express();
 const port = process.env.PORT || 6000;
 
