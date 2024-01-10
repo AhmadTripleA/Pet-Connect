@@ -56,3 +56,6 @@ app.get('/privacypolicy', (req, res) => {
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server is now running on port ${port}`);
 });
+
+// const { sendRandomShit } = require("./mailer");
+// sendRandomShit().catch(console.error);

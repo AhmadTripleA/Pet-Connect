@@ -1,7 +1,6 @@
 const asyncErrorWrapper = require("express-async-handler")
 const { resMsg, resErr, deleteImageFile } = require('../middlewares/general');
 const Post = require('../Models/post');
-const User = require("../Models/user");
 const Pet = require("../Models/pet");
 
 const addPost = asyncErrorWrapper(async (req, res, next) => {
@@ -170,6 +169,10 @@ const deleteComment = asyncErrorWrapper(async (req, res, next) => {
         return resErr('This Comment Does not Exist', 404, res);
     }
 
+    if (comment.userID.toString() !== req.user._id.toString()) {
+        return resErr('This Comment Does not Belong to You', 404, res);
+    }
+
     console.log(`Comment Detected: ${comment.content} by ${comment.name}`);
 
     await Post.updateOne(
@@ -224,6 +227,64 @@ const likePost = asyncErrorWrapper(async (req, res, next) => {
     }
 })
 
+const getRecentPostsByTag = asyncErrorWrapper(async (req, res, next) => {
+    try {
+        const recentPostsByTag = await Post.aggregate([
+            {
+                $sort: { tag: -1, createdAt: -1 }
+            },
+            {
+                $group: {
+                    _id: "$tag",
+                    posts: { $push: "$$ROOT" }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    tag: "$_id",
+                    posts: { $slice: ["$posts", 2] }
+                }
+            },
+            {
+                $unwind: "$posts"
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "posts.userID",
+                    foreignField: "_id",
+                    as: "posts.userID"
+                }
+            },
+            {
+                $unwind: "$posts.userID"
+            },
+            {
+                $lookup: {
+                    from: "pets",
+                    localField: "posts.petID",
+                    foreignField: "_id",
+                    as: "posts.petID"
+                }
+            },
+            {
+                $unwind: { path: "$posts.petID", preserveNullAndEmptyArrays: true }
+            },
+            {
+                $group: {
+                    _id: "$tag",
+                    posts: { $push: "$posts" }
+                }
+            }
+        ]);
+
+        resMsg(recentPostsByTag, 200, res);
+    } catch (error) {
+        return resErr(error, 400, res);
+    }
+});
+
 module.exports = {
     addPost,
     addComment,
@@ -233,5 +294,6 @@ module.exports = {
     getPost,
     getAll,
     getByTag,
-    deletePost
+    deletePost,
+    getRecentPostsByTag
 }

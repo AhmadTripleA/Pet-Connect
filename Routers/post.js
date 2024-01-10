@@ -13,5 +13,6 @@ router.post('/like', parseText.none(), authUser, cont.likePost);
 router.post('/getAll', parseText.none(), authUser, cont.getAll);
 router.post('/getByTag', parseText.none(), authUser, cont.getByTag);
 router.post('/delete', parseText.none(), authUser, cont.deletePost);
+router.post('/getRecentPostsByTag', parseText.none(), cont.getRecentPostsByTag);
 
 module.exports = router;
