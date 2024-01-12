@@ -285,6 +285,32 @@ const getRecentPostsByTag = asyncErrorWrapper(async (req, res, next) => {
     }
 });
 
+const filterPosts = asyncErrorWrapper(async (req, res, next) => {
+    const { query, limit } = req.body;
+
+    const posts = await Post.find({
+        $or: [
+            { content: { $regex: query, $options: 'i' } },
+            { title: { $regex: query, $options: 'i' } },
+            { 'petID.breed': { $regex: query, $options: 'i' } }
+        ]
+    })
+        .populate('petID')
+        .populate('userID')
+        .limit(limit)
+        .sort({ createdAt: -1 });
+
+    console.log(`Filter: ${query} | limit: ${limit} | ${posts.length} Posts Sent`);
+    res.status(200).json(posts);
+})
+
+const getPosts = asyncErrorWrapper(async (req, res, next) => {
+
+    const posts = await Post.find();
+    res.status(200).json(posts);
+})
+
+
 module.exports = {
     addPost,
     addComment,
@@ -295,5 +321,7 @@ module.exports = {
     getAll,
     getByTag,
     deletePost,
-    getRecentPostsByTag
+    getRecentPostsByTag,
+    filterPosts,
+    getPosts
 }

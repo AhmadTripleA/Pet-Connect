@@ -13,11 +13,11 @@ dotenv.config({
   path: './config/config.env'
 })
 
-const uri = `mongodb://${process.env.MONGO_URI}`;
-console.log(uri);
-
 const app = express();
 const port = process.env.PORT || 6000;
+
+// REMOVE THIS ON BUILD
+// mongoose.set('debug', true);
 
 // Connect to MongoDB URI
 mongoose.connect(process.env.MONGO_URI, {
@@ -34,7 +34,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Log all incoming requests in simple format 
-app.use(morgan('Method=:method Endpoint=:url Status=:status Time=:response-time ms - :date[web]\n=============='));
+const morganStyle = '===> :method End=:url Status=:status Time=:response-time ms - :date[web]';
+app.use(morgan(morganStyle));
 
 // Clear database model cache
 mongoose.models = {};
@@ -59,6 +60,3 @@ app.get('/privacypolicy', (req, res) => {
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server is now running on port ${port}`);
 });
-
-// const { sendRandomShit } = require("./mailer");
-// sendRandomShit().catch(console.error);

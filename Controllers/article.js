@@ -55,8 +55,25 @@ const getAll = asyncErrorWrapper(async (req, res, next) => {
     res.status(200).json(articles);
 })
 
+const filter = asyncErrorWrapper(async (req, res, next) => {
+    const { query, limit } = req.body;
+
+    const articles = await Article.find({
+        $or: [
+            { title: { $regex: query, $options: 'i' } },
+            { author: { $regex: query, $options: 'i' } }
+        ]
+    })
+        .limit(limit)
+        .sort({ createdAt: -1 });
+
+    console.log(`Filter: ${query} | limit: ${limit} | ${articles.length} Articles Sent`);
+    res.status(200).json(articles);
+})
+
 module.exports = {
     add,
     remove,
-    getAll
+    getAll,
+    filter
 }
