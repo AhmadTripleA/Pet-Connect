@@ -46,9 +46,6 @@ app.use('/', require('./Routers/index'))
 // this middleware takes whatever errors thrown during runtime and logs them
 app.use(customErrorHandler);
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'documentation.html'));
-});
 app.get('/termsofuse', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'termsofuse.html'));
 });
@@ -56,7 +53,7 @@ app.get('/privacypolicy', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'privacypolicy.html'));
 });
 app.get('/documentation', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'API-Doc.html'));
+  res.sendFile(path.join(__dirname, 'public', 'documentation.html'));
 });
 
 // Start the server

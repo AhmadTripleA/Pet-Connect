@@ -1,304 +1,457 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>DO NOT USE THIS PAGE AS REFERENCE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>API Documentation</title>
     <style>
-        /* Reset some default styles */
-        html,
-        body,
-        h1,
-        h2,
-        h3,
-        ul,
-        li,
-        code,
-        pre {
-            margin: 20px 0px;
-            padding: 0;
-        }
-
-        /* Set a background color and text color */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
-            color: #333;
-        }
-
-        /* Header styles */
-        h1 {
-            background-color: #0078d4;
-            color: white;
-            text-align: center;
+            background-color: #f8f9fa;
             padding: 20px;
         }
 
-        /* Content container */
         .container {
-            max-width: 50%;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Section styles */
-        h2 {
-            background-color: #0078d4;
-            color: white;
-            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
             margin-top: 20px;
         }
 
+        .api-request {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
 
-        /* List styles */
-        ul {
+        .req-title {
+            font-weight: bold;
+        }
+
+        .api-request-header {
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            padding: 15px 0px 3px 20px;
+        }
+
+        .endpoint {
+            font-size: 1.2em;
+            color: #007bff;
+        }
+
+        .method {
+            font-size: 1.1em;
+            color: #28a745;
+        }
+
+        .code {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 5px 0px 5px 15px;
+            margin-bottom: 5px;
+        }
+
+        p {
+            margin-top: 10px;
+        }
+
+        /* Index Panel Styling */
+        .index-panel {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: -250px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: right 0.3s;
+        }
+
+        .index-panel h4 {
+            margin-bottom: 15px;
+        }
+
+        .index-panel ul {
+            padding: 0;
+            margin: 0;
             list-style: none;
         }
 
-        li {
-            margin-bottom: 10px;
+        .index-panel li {
+            margin-bottom: 8px;
         }
 
-        /* Code and pre styles */
-        code,
-        pre {
-            background-color: #f2f2f2;
-            color: black;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-family: Consolas, monospace;
+        .index-panel a {
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s;
         }
 
-        /* Add more styles for specific elements as needed */
+        .index-panel a:hover {
+            color: #007bff;
+        }
+
+        .toggle-button {
+            position: fixed;
+            z-index: 2;
+            bottom: 5%;
+            right: 45%;
+            transform: translateY(-50%);
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
-
-    <h1>DONT USE THIS PAGE AS REFERENCE</h1>
-    <h1>THIS IS DEPRECATED</h1>
-
     <div class="container">
-        <h1>API Base URL: <code>http://92.253.29.14:23311/</code></h2>
 
-            <h2>Register a New User</h2>
+        <!-- Toggle Button -->
+        <div class="toggle-button" id="toggleButton">Toggle Index</div>
 
-            <ul>
-                <li><strong>Endpoint:</strong> <code> /users/register</code></li>
-                <li><strong>HTTP Method:</strong> POST</li>
-                <li><strong>Description:</strong> Registers a new user. All new users receive a default profile picture.
-                </li>
-                <li><strong>Parameters:</strong>
-                    <ul>
-                        <li><code>name</code> (String): User's name.</li>
-                        <li><code>email</code> (String): User's email.</li>
-                        <li><code>password</code> (String): User's password.</li>
-                        <li><code>phoneNumber</code> (String): User's phone number.</li>
-                    </ul>
-                </li>
-                <li><strong>Request Example:</strong>
-                    <pre>
-{
-    "name": "John Doe",
-    "email": "johndoe@example.com",
-    "password": "your_password",
-    "phoneNumber": "123-456-7890"
-}
-        </pre>
-                </li>
-                <li><strong>Response:</strong>
-                    <ul>
-                        <li><strong>Success (200 OK):</strong>
-                            <pre>
-{
-    "message": "User registration successful."
-}
-                </pre>
-                        </li>
-                        <li><strong>Error (4xx/5xx):</strong>
-                            <pre>
-{
-    "error": "Registration failed. Please check your input."
-}
-                </pre>
-                        </li>
-                    </ul>
-                </li>
+        <!-- Index Panel -->
+        <div class="index-panel" id="indexPanel">
+            <h4 class="mb-3">API Index</h4>
+            <ul class="list-unstyled" id="apiIndex">
+                <!-- Index links will be dynamically generated here -->
             </ul>
+        </div>
 
-            <!-- Add documentation for other endpoints -->
+        <h1 class="mt-4 mb-5 text-center">Pet-Connect API Documentation</h1>
+        <h3 class="mt-4 mb-5 text-center">Server URL: <code>http://94.249.3.247:48540</code></h3>
 
-            <h2 id="new-post">Get All Users</h2>
-
-            <p><strong>Endpoint:</strong><code> /users/getAllUsers</code></p>
-            <p><strong>Method:</strong> GET</p>
-            <p><strong>Description:</strong> Returns an array of all users.</p>
-            <p><strong>Parameters: NO PARAMETERS</strong></p>
-
-            <li><strong>Response:</strong>
-                <ul>
-                    <li><strong>Success (200 OK):</strong>
-                        <pre>
-{
-"_id": "6542c7e19b8540350bd44aa3",
-"name": "we",
-"email": "we@gmail.com",
-"password": "$2b$10$/K5gogOPFlk67X8fS3JPZuOGaNmJn6Iy5uOk4YnYOC07pq6JYhNKm",
-"phoneNumber": 56414,
-"profilePic": "Location\\uploads\\images\\default_user_icon.png",
-"__v": 0
-}
-</pre>
-                    </li>
-                    <li><strong>Error (4xx/5xx):</strong>
-                        <pre>
-{
-"error": "Failed to get users. We Don't know why"
-}
-</pre>
-                    </li>
-                </ul>
-            </li>
-
-            <h2>Get User Information</h2>
-
-            <ul>
-                <li><strong>Endpoint:</strong> <code>users/getInfo</code></li>
-                <li><strong>HTTP Method:</strong> GET</li>
-                <li><strong>Description:</strong> Displays user's generic information, including the path to their
-                    profile
-                    picture.</li>
-                <li><strong>Parameters:</strong>
-                    <ul>
-                        <li><code>email</code> (String): User's email.</li>
-                    </ul>
-                </li>
-                <li><strong>Request Example:</strong>
-                    <pre>
-GET /users/getInfo?email=johndoe@example.com
-        </pre>
-                </li>
-                <li><strong>Response:</strong>
-                    <pre>
-{
-    "name": "John Doe",
-    "email": "johndoe@example.com",
-    "phoneNumber": "123-456-7890",
-    "profilePic": "http://92.253.30.93:28251/users/getProfilePic?email=johndoe@example.com"
-}
-        </pre>
-                </li>
-            </ul>
-
-            <h2>Get User Profile Picture</h2>
-
-            <ul>
-                <li><strong>Endpoint:</strong> <code>users/getProfilePic</code></li>
-                <li><strong>HTTP Method:</strong> GET</li>
-                <li><strong>Description:</strong> Displays the user's profile picture.</li>
-                <li><strong>Parameters:</strong>
-                    <ul>
-                        <li><code>email</code> (String): User's email.</li>
-                    </ul>
-                </li>
-                <li><strong>Request Example:</strong>
-                    <pre>
-{
-    "email": "johndoe@example.com"
-}
-        </pre>
-                </li>
-                <li><strong>Response:</strong>
-                    <p>The response will be the user's profile picture in image format.</p>
-                </li>
-            </ul>
-
-            <h2>Set User Profile Picture</h2>
-
-            <ul>
-                <li><strong>Endpoint:</strong> <code>users/setProfilePic</code></li>
-                <li><strong>HTTP Method:</strong> POST</li>
-                <li><strong>Description:</strong> Changes the user's profile picture. Use "multipart/form-data"
-                    encryption to send the request, including the email of the user and a new image.</li>
-                <li><strong>Parameters:</strong>
-                    <ul>
-                        <li><code>email</code> (String): User's email.</li>
-                        <li><code>profilePic</code> (Image File): New user profile picture.</li>
-                    </ul>
-                </li>
-                <li><strong>Request Example:</strong>
-                    <pre>
-{
-    "email": "johndoe@example.com",
-    "profilePic": "image_name.png"
-}
-        </pre>
-                </li>
-                <li><strong>Response:</strong>
-                    <ul>
-                        <li><strong>Success (200 OK):</strong>
-                            <pre>
-{
-    "message": "Profile picture updated successfully."
-}
-                </pre>
-                        </li>
-                        <li><strong>Error (4xx/5xx):</strong>
-                            <pre>
-{
-    "error": "Profile picture update failed. Please check your input."
-}
-                </pre>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
-            <h2 id="new-post">Create a New Post</h2>
-
-            <p><strong>Endpoint:</strong><code> /posts/newPost</code></p>
-            <p><strong>Method:</strong> POST</p>
-            <p><strong>Description:</strong> Create a new post in the database.</p>
-            <p><strong>Parameters:</strong></p>
-            <ul>
-                <li><code>email</code> (String) - The email of the user who is the author of the post.</li>
-                <li><code>title</code> (String) - The title of the post.</li>
-                <li><code>content</code> (String) - The content or body of the post.</li>
-                <li><code>tags</code> (Array of Strings) - An array of tags associated with the post for sorting and
-                    categorization.</li>
-                <li><code>images</code> (Array of Strings) - An array of image locations associated with the post.</li>
-            </ul>
-            <li><strong>Request Example:</strong>
-                <pre>
-{
-    "email": "user_email_here",
-    "title": "New Post Title",
-    "content": "This is the content of the new post.",
-    "tags": ["tag1", "tag2"],
-    "images": ["image1.jpg", "image2.jpg"]
-}
-    </pre>
-            </li>
-            <li><strong>Response:</strong>
-                <ul>
-                    <li><strong>Success (200 OK):</strong>
-                        <pre>
-{
-    "message": "New post created successfully."
-}
-            </pre>
-                    </li>
-                    <li><strong>Error (4xx/5xx):</strong>
-                        <pre>
-{
-    "error": "Failed to create the new post. Please check your input."
-}
-            </pre>
-                    </li>
-                </ul>
-            </li>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/users/addUser">
+            <h4>Add User</h4>
+            <p>Adds a new user account to the database</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/users/addUser</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"name": "Ahmad", </code></pre>
+            <pre class="code"><code>"email": "ahmadaktaa@gmail.com", </code></pre>
+            <pre class="code"><code>"password": "Ahmad123"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"userID": "84796560982374039284"</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/users/login">
+            <h4>Login User</h4>
+            <p>Returns the userID when logging in with email/password</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/users/login</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"email": "ahmadaktaa@gmail.com", </code></pre>
+            <pre class="code"><code>"password": "Ahmad123"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"userID": "84796560982374039284"</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/users/getUser">
+            <h4>Get User</h4>
+            <p>Returns all user's data</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/users/getUser</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"name": "Ahmad"</code></pre>
+            <pre class="code"><code>"email": "ahmadaktaa@gmail.com"</code></pre>
+            <pre class="code"><code>"phone": "0789445658"</code></pre>
+            <pre class="code"><code>"pets": [{1561463}, {5465174}, ..etc] </code></pre>
+            <pre class="code"><code>and more...</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/users/getPosts">
+            <h4>Get User's Posts</h4>
+            <p>Returns all user's own posts as an array of IDs</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/users/getPosts</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>[{8741664}, {87517441}, ..etc]</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/users/getPets">
+            <h4>Get User's Pets</h4>
+            <p>Returns all user's own pets as an array of IDs</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/users/getPets</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>[{8741664}, {87517441}, ..etc]</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/users/addProfilePic">
+            <h4>Add Profile Picture</h4>
+            <p>Updates user's profile picture</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/users/addProfilePic</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <pre class="code"><code>"file": "avatar.png"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"message" : "Profile Pic Updated Successfully!"</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/users/getProfilePic">
+            <h4>Get Profile Pic</h4>
+            <p>Returns a user's profile pic</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/users/getProfilePic</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"profilePic" : "avatar.png"</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/users/addPhone">
+            <h4>Add Phone Number</h4>
+            <p>Add a user phone number for contact</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/users/addPhone</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <pre class="code"><code>"phone": "0789243215"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"message" : "Phone Number 0789243215 added to Ahmad!"</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/users/deletePhone">
+            <h4>Delete Phone Number</h4>
+            <p>deletes a user phone number</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/users/deletePhone</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"message" : "Phone number deleted from Ahmad!"</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/users/delete">
+            <h4>Delete Account</h4>
+            <p>deletes a user's entire account and all their posts/pets</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/users/delete</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"message" : "User Ahmad Deleted Successfully!"</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/pets/add">
+            <h4>Add Pet</h4>
+            <p>add a new pet to a user</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/pets/add</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <pre class="code"><code>"name": "Susu"</code></pre>
+            <pre class="code"><code>"type": "dog"</code></pre>
+            <pre class="code"><code>"breed": "German Shepard"</code></pre>
+            <pre class="code"><code>"gender": "m"</code></pre>
+            <pre class="code"><code>"birthDate": "2012-2-8"</code></pre>
+            <pre class="code"><code>"file": "susu.jpeg"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"message" : "Susu added - ownder: Ahmad"</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/pets/delete">
+            <h4>Delete Pet</h4>
+            <p>delete a pet from a user</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/pets/delete</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <pre class="code"><code>"petID": "8796165487541"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"message" : "Susu deleted from user: Ahmad"</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/posts/addPost">
+            <h4>Add Post</h4>
+            <p>Adds a new post by user</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/posts/addPost</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <pre class="code"><code>"petID": "8796165685487541"</code></pre>
+            <pre class="code"><code>"title": "This is my post title"</code></pre>
+            <pre class="code"><code>"content": "here goes my content"</code></pre>
+            <pre class="code"><code>"tag": "social"</code></pre>
+            <pre class="code"><code>"file": "image"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"message" : "Post added Successfully"</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/posts/getAll">
+            <h4>Get All Posts</h4>
+            <p>Returns an array of all posts, sorted by new</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/posts/getAll</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>[Post Data]</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/posts/getByTag">
+            <h4>Get Posts by Tag</h4>
+            <p>Returns an array of all posts with a certain tag, sorted by new</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/posts/getByTag</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <pre class="code"><code>"tag": "adoption"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>[Post Data]</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/posts/delete">
+            <h4>Delete Post</h4>
+            <p>Deletes a user's post</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/posts/delete</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <pre class="code"><code>"postID": "84618648738445"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"Message" : "Post deleted Successfully</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/posts/addComment">
+            <h4>Add Comment</h4>
+            <p>Adds a new comment to a post</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/posts/addComment</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <pre class="code"><code>"postID": "8796165685487541"</code></pre>
+            <pre class="code"><code>"content": "Hi everyone!"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"message" : "Comment added Successfully"</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/posts/getComments">
+            <h4>Get Comments</h4>
+            <p>Returns all comments of a post as an array of commentIDs</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/posts/getComments</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <pre class="code"><code>"postID": "8796165685487541"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>[{61285541}, {51563185}, ..etc]</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/posts/deleteComment">
+            <h4>Delete Comment</h4>
+            <p>Deletes a comment from a post</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/posts/deleteComment</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <pre class="code"><code>"postID": "8796165685487541"</code></pre>
+            <pre class="code"><code>"commentID": "879616565685487541"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>"message" : "Comment Deleted Successfully"</code></pre>
+        </div>
+        <!-- Start API Request Block -->
+        <div class="api-request-header" id="/articles/getAll">
+            <h4>Get All Articles</h4>
+            <p>Returns an array of all articles, sorted by new</p>
+        </div>
+        <div class="api-request">
+            <h2 class="endpoint">Endpoint: <code>/articles/getAll</code></h2>
+            <p class="method">HTTP Method: <code>POST</code></p>
+            <p class="req-title">Body Example:</p>
+            <pre class="code"><code>"userID": "546871685647841565"</code></pre>
+            <p class="req-title">Successful Response Example:</p>
+            <pre class="code"><code>[Article Data]</code></pre>
+        </div>
     </div>
 
+    <script>
+        // Dynamically generate index links based on API request headers
+        document.addEventListener("DOMContentLoaded", function () {
+            const apiIndexList = document.getElementById("apiIndex");
+            const apiRequestHeaders = document.querySelectorAll(".api-request-header");
+
+            apiRequestHeaders.forEach((header, index) => {
+                const headerId = header.id;
+                const headerText = header.querySelector("h4").innerText;
+
+                const listItem = document.createElement("li");
+                const anchor = document.createElement("a");
+                anchor.href = `#${headerId}`;
+                anchor.innerText = headerText;
+
+                listItem.appendChild(anchor);
+                apiIndexList.appendChild(listItem);
+            });
+        });
+
+        // Toggle the index panel
+        const toggleButton = document.getElementById("toggleButton");
+        const indexPanel = document.getElementById("indexPanel");
+
+        toggleButton.addEventListener("click", function () {
+            const currentRightValue = parseInt(getComputedStyle(indexPanel).right);
+            indexPanel.style.right = currentRightValue === 0 ? "-250px" : "0";
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>

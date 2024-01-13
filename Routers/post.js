@@ -10,6 +10,7 @@ router.post('/addPost', uploadImg.single("file"), authUser, cont.addPost);
 router.post('/addComment', parseText.none(), authUser, cont.addComment);
 router.post('/like', parseText.none(), authUser, cont.likePost);
 // Querying
+router.post('/getPost', parseText.none(), authUser, cont.getPost)
 router.post('/getAll', parseText.none(), authUser, cont.getAll);
 router.post('/getByTag', parseText.none(), authUser, cont.getByTag);
 router.post('/getRecentPostsByTag', parseText.none(), cont.getRecentPostsByTag);

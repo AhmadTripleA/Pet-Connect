@@ -50,6 +50,7 @@ const addPost = asyncErrorWrapper(async (req, res, next) => {
     }
 
 })
+
 const getPost = asyncErrorWrapper(async (req, res, next) => {
     const post = await Post.findById(req.body.postID)
         .populate('petID')
@@ -62,12 +63,19 @@ const getPost = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const getAll = asyncErrorWrapper(async (req, res, next) => {
+    let limit = req.body.limit;
+
+    if (!limit) {
+        limit = 15;
+    }
+
     const posts = await Post.find({
         state: "active"
     })
         .sort({ createdAt: -1 })
         .populate('petID')
-        .populate('userID');
+        .populate('userID')
+        .limit(limit);
 
     // send empty insted of null
     if (!posts) {
@@ -78,6 +86,11 @@ const getAll = asyncErrorWrapper(async (req, res, next) => {
 
 const getByTag = asyncErrorWrapper(async (req, res, next) => {
     const tag = req.body.tag;
+    let limit = req.body.limit;
+
+    if (!limit) {
+        limit = 15;
+    }
 
     const posts = await Post.find({
         $and: [
@@ -87,7 +100,8 @@ const getByTag = asyncErrorWrapper(async (req, res, next) => {
     })
         .sort({ createdAt: -1 })
         .populate('petID')
-        .populate('userID');
+        .populate('userID')
+        .limit(limit);
 
     // send empty instead of null
     if (!posts) {
@@ -305,7 +319,6 @@ const filterPosts = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const getPosts = asyncErrorWrapper(async (req, res, next) => {
-
     const posts = await Post.find();
     res.status(200).json(posts);
 })

@@ -6,15 +6,18 @@ const { authUser } = require('../middlewares/userAuth');
 
 const router = express.Router();
 
+// Adding
 router.post('/addUser', parseText.none(), cont.addAccount);
 router.post('/addPhone', parseText.none(), authUser, cont.addPhone);
-router.post('/deletePhone', parseText.none(), authUser, cont.deletePhone);
 router.post('/addProfilePic', uploadImg.single('file'), authUser, cont.addProfilePic)
-router.post('/getProfilePic', parseText.none(), authUser, cont.getProfilePic);
+// Querying
+router.post('/login', parseText.none(), cont.login);
+router.post('/getPosts', parseText.none(), authUser, cont.getPosts);
 router.post('/getUser', parseText.none(), authUser, cont.getUser);
 router.post('/getPets', parseText.none(), authUser, cont.getPets);
-router.post('/getPosts', parseText.none(), authUser, cont.getPosts);
-router.post('/login', parseText.none(), cont.login);
+router.post('/getProfilePic', parseText.none(), authUser, cont.getProfilePic);
+// Deleting
+router.post('/deletePhone', parseText.none(), authUser, cont.deletePhone);
 router.post('/delete', parseText.none(), authUser, cont.deleteAccount);
 
 module.exports = router;
