@@ -80,7 +80,7 @@ const login = asyncErrorWrapper(async (req, res, next) => {
     // Compare the provided password with the hashed password in the database
     const isPasswordMatch = await bcrypt.compare(req.body.password, user.password);
     if (!isPasswordMatch) {
-        return resErr("Invalid password", 401, res);
+        return resErr("Invalid Email or Password", 401, res);
     }
 
     res.status(200).json({

@@ -2,7 +2,6 @@ const asyncErrorWrapper = require("express-async-handler")
 const User = require('../Models/user');
 const Pet = require('../Models/pet');
 const Post = require('../Models/post');
-const { resErr, resMsg, deleteImageFile } = require('../middlewares/general');
 
 const getAllUsers = asyncErrorWrapper(async (req, res, next) => {
     const users = await User.find();

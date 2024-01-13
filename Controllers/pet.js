@@ -28,7 +28,7 @@ const addPet = asyncErrorWrapper(async (req, res, next) => {
         // save user to DB
         await pet.save();
 
-        console.log(`New Pet "${pet.name}" Added - Owner: ${user.name}`);
+        console.log(`"${pet.name}" Added - Owner: ${user.name}`);
         res.status(200).json({ petID: pet._id });
     } catch (err) {
         deleteImageFile(req, req.file.filename)

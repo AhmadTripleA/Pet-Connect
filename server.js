@@ -55,6 +55,9 @@ app.get('/termsofuse', (req, res) => {
 app.get('/privacypolicy', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'privacypolicy.html'));
 });
+app.get('/documentation', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'API-Doc.html'));
+});
 
 // Start the server
 app.listen(port, '0.0.0.0', () => {
