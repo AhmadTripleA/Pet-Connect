@@ -52,6 +52,7 @@ const getAll = asyncErrorWrapper(async (req, res, next) => {
 
     const articles = await Article.find();
 
+    console.log(`Sent (${articles.length}) Articles`)
     res.status(200).json(articles);
 })
 
@@ -71,9 +72,25 @@ const filter = asyncErrorWrapper(async (req, res, next) => {
     res.status(200).json(articles);
 })
 
+const getArticle = asyncErrorWrapper(async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const article = await Article.findById(id);
+        if (!article) {
+            return res.status(404).json({ message: 'Article not found' });
+        }
+        console.log(`Article ${id} Sent!`);
+        res.json(article);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+})
+
 module.exports = {
     add,
     remove,
     getAll,
-    filter
+    filter,
+    getArticle,
 }

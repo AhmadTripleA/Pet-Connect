@@ -43,7 +43,7 @@ const addPost = asyncErrorWrapper(async (req, res, next) => {
         }
 
         console.log(post);
-        resMsg("Post Added Successfully!", 200, res);
+        resMsg(`Post by ${req.user.name} Added Successfully!`, 200, res);
     } catch (err) {
         deleteImageFile(res, req.file.filename);
         return resErr(`Error Adding Post - ${err}`, 400, res);
@@ -60,6 +60,7 @@ const getPost = asyncErrorWrapper(async (req, res, next) => {
         return resErr(`This Post Does not Exist!`, 404, res);
     }
     res.status(200).json(post);
+    console.log(`Post with id:${post._id} Sent!`);
 })
 
 const getAll = asyncErrorWrapper(async (req, res, next) => {
@@ -82,6 +83,7 @@ const getAll = asyncErrorWrapper(async (req, res, next) => {
         posts = []
     }
     res.status(200).json(posts);
+    console.log(`Sent ${posts.length} Posts!`);
 })
 
 const getByTag = asyncErrorWrapper(async (req, res, next) => {
@@ -90,6 +92,10 @@ const getByTag = asyncErrorWrapper(async (req, res, next) => {
 
     if (!limit) {
         limit = 15;
+    }
+
+    if (!tag) {
+        tag = 'social';
     }
 
     const posts = await Post.find({
@@ -109,6 +115,7 @@ const getByTag = asyncErrorWrapper(async (req, res, next) => {
     }
 
     res.status(200).json(posts);
+    console.log(`Sent ${posts.length} Posts by Tag: ${tag}!`)
 })
 
 const deletePost = asyncErrorWrapper(async (req, res, next) => {
@@ -132,7 +139,7 @@ const deletePost = asyncErrorWrapper(async (req, res, next) => {
         // console.log(`post image deleted`);
 
         await Post.updateOne({ _id: post._id }, { state: "deleted" });
-        resMsg(`Post Deleted Successfully!`, 200, res);
+        resMsg(`Post ${post._id} Deleted Successfully!`, 200, res);
     } catch (err) {
         resErr(`Error Deleting Post - ${err.message}`, 400, res);
     }
@@ -148,8 +155,6 @@ const addComment = asyncErrorWrapper(async (req, res, next) => {
             return resErr(`This Post Doesn't Exist`, 404, res);
         }
 
-        console.log(post);
-
         const newComment = {
             userID: req.user._id,
             name: req.user.name,
@@ -164,7 +169,7 @@ const addComment = asyncErrorWrapper(async (req, res, next) => {
         const updatedPost = await Post.findById(postID);
         res.status(200).json(updatedPost);
 
-        console.log('Comment Added & Updated Post Delievered');
+        console.log(`Comment (${content}) Added by ${newComment.name}!`);
     } catch (err) {
         resErr(`Error adding comment - ${err.message}`, 400, res);
     }
@@ -187,14 +192,12 @@ const deleteComment = asyncErrorWrapper(async (req, res, next) => {
         return resErr('This Comment Does not Belong to You', 404, res);
     }
 
-    console.log(`Comment Detected: ${comment.content} by ${comment.name}`);
-
     await Post.updateOne(
         { _id: postID },
         { $pull: { comments: { _id: commentID } } }
     )
 
-    console.log(`Commented Deleted Successfully!`);
+    console.log(`Comment: (${comment.content}) Deleted by ${comment.name}!`);
 
     const updatedPost = await Post.findById(postID);
     res.status(200).json(updatedPost);
@@ -230,14 +233,14 @@ const likePost = asyncErrorWrapper(async (req, res, next) => {
             { _id: postID },
             { $addToSet: { likes: userID } }
         );
-        return resMsg(`Added Like Successfully!`, 200, res);
+        return resMsg(`Added Like from ${post._id} Successfully!`, 200, res);
     } else {
         // User has liked, so remove his like
         await Post.updateOne(
             { _id: postID },
             { $pull: { likes: userID } }
         );
-        return resMsg(`Removed Like Successfully!`, 200, res);
+        return resMsg(`Removed Like from from ${post._id} Successfully!`, 200, res);
     }
 })
 
@@ -293,7 +296,8 @@ const getRecentPostsByTag = asyncErrorWrapper(async (req, res, next) => {
             }
         ]);
 
-        resMsg(recentPostsByTag, 200, res);
+        // resMsg(recentPostsByTag, 200, res);
+        res.status(200).json({ Message: recentPostsByTag });
     } catch (error) {
         return resErr(error, 400, res);
     }
@@ -311,8 +315,8 @@ const filterPosts = asyncErrorWrapper(async (req, res, next) => {
     })
         .populate('petID')
         .populate('userID')
-        .limit(limit)
-        .sort({ createdAt: -1 });
+        .sort({ createdAt: -1 })
+        .limit(limit);
 
     console.log(`Filter: ${query} | limit: ${limit} | ${posts.length} Posts Sent`);
     res.status(200).json(posts);
@@ -322,7 +326,6 @@ const getPosts = asyncErrorWrapper(async (req, res, next) => {
     const posts = await Post.find();
     res.status(200).json(posts);
 })
-
 
 module.exports = {
     addPost,

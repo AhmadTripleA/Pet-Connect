@@ -39,6 +39,7 @@ const getWriter = asyncErrorWrapper(async (req, res, next) => {
         return resErr("Invalid password", 401, res);
     }
 
+    console.log(`Writer ${writer._id} Sent Successfully!`);
     res.status(200).json({
         writerID: writer._id,
         name: writer.name,

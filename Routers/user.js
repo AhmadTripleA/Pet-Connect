@@ -2,7 +2,7 @@ const express = require('express');
 const cont = require('../Controllers/user');
 const { parseText, uploadImg } = require('../middlewares/general');
 const { authUser } = require('../middlewares/userAuth');
-// const { uploadImg } = require('../middlewares/general');
+const { uploadImg } = require('../middlewares/general');
 
 const router = express.Router();
 

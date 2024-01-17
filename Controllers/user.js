@@ -31,16 +31,15 @@ const addAccount = asyncErrorWrapper(async (req, res, next) => {
 
 const addProfilePic = asyncErrorWrapper(async (req, res, next) => {
     try {
-        const user = await User.findById(req.body.userID)
         const image = req.file.filename;
 
         if (!image) {
             return resErr("No file found in request", 400, res);
         }
 
-        await User.updateOne({ _id: user._id }, { profilePic: image });
+        await User.updateOne({ _id: req.user._id }, { profilePic: image });
 
-        resMsg("Profile Pic Updated Successfully!", 200, res);
+        resMsg(`${req.user.name}'s Profile Pic Changed Successfully!`, 200, res);
     } catch (err) {
         deleteImageFile(req, req.file.filename)
         resErr(`Error Updating Profile Picture - ${err}`, 400, res);
@@ -49,7 +48,7 @@ const addProfilePic = asyncErrorWrapper(async (req, res, next) => {
 })
 
 const getProfilePic = asyncErrorWrapper(async (req, res, next) => {
-    console.log('image sent!');
+    console.log(`${req.user.name}'s Profile Pic Sent Successfully!`);
     res.status(200).json({ profilePic: req.user.profilePic });
 })
 
@@ -90,6 +89,7 @@ const login = asyncErrorWrapper(async (req, res, next) => {
         profilePic: user.profilePic,
         phone: user.phone,
     });
+    console.log(`${user.name} Logged in Successfully!`);
 })
 
 const getUser = asyncErrorWrapper(async (req, res, next) => {
@@ -110,6 +110,7 @@ const getUser = asyncErrorWrapper(async (req, res, next) => {
             .sort({ createdAt: -1 })
     }
 
+    console.log(`${req.user}'s Data Sent Successfully`);
     res.status(200).json(data);
 })
 
@@ -122,6 +123,7 @@ const getPets = asyncErrorWrapper(async (req, res, next) => {
     })
         .sort({ createdAt: -1 });
 
+    console.log(`${req.user.name}'s Pets Sent!`)
     return res.status(200).json(pets);
 })
 
@@ -136,6 +138,7 @@ const getPosts = asyncErrorWrapper(async (req, res, next) => {
         .populate('petID')
         .populate('userID');
 
+    console.log(`${req.user.name}'s Posts Sent!`)
     return res.status(200).json(posts);
 })
 
