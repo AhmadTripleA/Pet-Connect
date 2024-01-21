@@ -1,6 +1,6 @@
-const asyncErrorWrapper = require("express-async-handler")
-const Writer = require('../Models/writer');
-const bcrypt = require('bcrypt');
+import asyncErrorWrapper from 'express-async-handler';
+import bcrypt from 'bcrypt';
+import Writer from '../Models/writer.js';
 
 const addAccount = asyncErrorWrapper(async (req, res, next) => {
 
@@ -47,7 +47,7 @@ const getWriter = asyncErrorWrapper(async (req, res, next) => {
     });
 })
 
-module.exports = {
+export default {
     addAccount,
     getWriter
 }

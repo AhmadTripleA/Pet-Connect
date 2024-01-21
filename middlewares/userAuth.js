@@ -1,8 +1,8 @@
-const User = require('../Models/user');
-const { resErr } = require('./general');
+import User from '../Models/user.js';
+import { resErr } from './general.js';
 
 // Only checks if user exists in database by validating email
-async function authUser(req, res, next) {
+export async function authUser(req, res, next) {
     try {
         const user = await User.findById(req.body.userID);
 
@@ -18,5 +18,3 @@ async function authUser(req, res, next) {
         return resErr(err.message, 400, res);
     }
 }
-
-module.exports.authUser = authUser;

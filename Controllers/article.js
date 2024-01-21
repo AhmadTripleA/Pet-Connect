@@ -1,7 +1,7 @@
-const asyncErrorWrapper = require("express-async-handler")
-const Writer = require('../Models/writer');
-const Article = require("../Models/article");
-const { resMsg, resErr } = require('../middlewares/general');
+import asyncErrorWrapper from "express-async-handler";
+import Writer from '../Models/writer.js';
+import Article from "../Models/article.js";
+import { resMsg, resErr } from '../middlewares/general.js';
 
 const add = asyncErrorWrapper(async (req, res, next) => {
     try {
@@ -87,7 +87,7 @@ const getArticle = asyncErrorWrapper(async (req, res, next) => {
     }
 })
 
-module.exports = {
+export default {
     add,
     remove,
     getAll,

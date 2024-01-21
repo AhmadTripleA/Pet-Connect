@@ -1,8 +1,7 @@
-const express = require('express');
-const cont = require('../Controllers/user');
-const { parseText, uploadImg } = require('../middlewares/general');
-const { authUser } = require('../middlewares/userAuth');
-const { uploadImg } = require('../middlewares/general');
+import express from 'express';
+import cont from '../Controllers/user.js';
+import { parseText, uploadImg } from '../middlewares/general.js';
+import { authUser } from '../middlewares/userAuth.js';
 
 const router = express.Router();
 
@@ -20,4 +19,4 @@ router.post('/getProfilePic', parseText.none(), authUser, cont.getProfilePic);
 router.post('/deletePhone', parseText.none(), authUser, cont.deletePhone);
 router.post('/delete', parseText.none(), authUser, cont.deleteAccount);
 
-module.exports = router;
+export default router;

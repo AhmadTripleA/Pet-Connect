@@ -1,7 +1,7 @@
-const express = require('express');
-const controller = require('../Controllers/article');
-const { parseText, uploadImg } = require('../middlewares/general');
-const { authUser } = require('../middlewares/userAuth');
+import express from 'express';
+import controller from '../Controllers/article.js';
+import { authUser } from '../middlewares/userAuth.js';
+import { parseText, uploadImg } from '../middlewares/general.js';
 
 const router = express.Router();
 
@@ -14,4 +14,4 @@ router.get('/:id', parseText.none(), controller.getArticle);
 // Deleting
 router.post('/delete', parseText.none(), controller.remove);
 
-module.exports = router;
+export default router;

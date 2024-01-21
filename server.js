@@ -1,12 +1,11 @@
-const dotenv = require("dotenv"); // for handling config environment files
-const express = require('express');
-const mongoose = require('mongoose'); // Database
-const morgan = require('morgan'); // logging
-const bodyParser = require('body-parser'); // JSON parsing (rarely works)
-const path = require('path'); // For working with file paths
-const cors = require('cors'); // for sending shit to frontend (React) idk tbh
-const customErrorHandler = require('./middlewares/errors/customErrorHandler'); // custom error handler instead of "catch" phrases
-const { imgPath } = require('./middlewares/general');
+import dotenv from "dotenv";
+import express from 'express';
+import mongoose from 'mongoose';
+import morgan from 'morgan';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import customErrorHandler from './middlewares/errors/customErrorHandler.js';
+import { imgPath } from './middlewares/general.js';
 
 // Environment Variable File Config (must be 1st priority)
 dotenv.config({
@@ -26,7 +25,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 // Express static serving routes
-app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static('./public'));
 app.use('/uploads/images', express.static(imgPath));
 
 app.use(bodyParser.json());
@@ -41,19 +40,20 @@ app.use(morgan(morganStyle));
 mongoose.models = {};
 
 // Index containing all the Routes
-app.use('/', require('./Routers/index'))
+import indexRouter from './Routers/index.js';
+app.use('/', indexRouter);
 
 // this middleware takes whatever errors thrown during runtime and logs them
 app.use(customErrorHandler);
 
 app.get('/termsofuse', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'termsofuse.html'));
+  res.sendFile('./public/termsofuse.html');
 });
 app.get('/privacypolicy', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'privacypolicy.html'));
+  res.sendFile('./public/privacypolicy.html');
 });
 app.get('/documentation', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'documentation.html'));
+  res.sendFile('./public/documentation.html');
 });
 
 // Start the server

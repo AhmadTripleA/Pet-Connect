@@ -1,7 +1,7 @@
-const asyncErrorWrapper = require("express-async-handler")
-const { resMsg, resErr, deleteImageFile } = require('../middlewares/general');
-const Post = require('../Models/post');
-const Pet = require("../Models/pet");
+import asyncErrorWrapper from 'express-async-handler';
+import { resMsg, resErr, deleteImageFile } from '../middlewares/general.js';
+import Post from '../Models/post.js';
+import Pet from '../Models/pet.js';
 
 const addPost = asyncErrorWrapper(async (req, res, next) => {
     // Its important to use Try-Catch when deleting images
@@ -327,7 +327,7 @@ const getPosts = asyncErrorWrapper(async (req, res, next) => {
     res.status(200).json(posts);
 })
 
-module.exports = {
+export default {
     addPost,
     addComment,
     deleteComment,

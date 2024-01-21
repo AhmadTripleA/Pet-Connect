@@ -1,5 +1,5 @@
-const { resErr, resMsg } = require('../middlewares/general');
-const Chat = require('../Models/chat');
+import { resErr, resMsg } from '../middlewares/general.js';
+import Chat from '../Models/chat.js';
 
 exports.newChat = async (req, res) => {
     try {

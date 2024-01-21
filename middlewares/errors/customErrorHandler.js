@@ -1,4 +1,4 @@
-const CustomError = require("./CustomError")
+import CustomError from './CustomError.js';
 
 const customErrorHandler = (err, req, res, next) => {
 
@@ -38,4 +38,4 @@ const customErrorHandler = (err, req, res, next) => {
 
 }
 
-module.exports = customErrorHandler
+export default customErrorHandler;

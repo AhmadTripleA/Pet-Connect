@@ -1,14 +1,14 @@
-const express = require("express");
+import express from "express";
 
 const router = express.Router();
 
-const usersRoute = require("./user");
-const postsRoute = require("./post");
-const articlesRoute = require("./article");
-const petsRoute = require("./pet");
-const writersRoute = require("./writer");
-const adminsRoute = require("./admin");
-const debugRoute = require("./debug");
+import usersRoute from "./user.js";
+import postsRoute from "./post.js";
+import articlesRoute from "./article.js";
+import petsRoute from "./pet.js";
+import writersRoute from "./writer.js";
+import adminsRoute from "./admin.js";
+import debugRoute from "./debug.js";
 
 router.use("/users", usersRoute);
 router.use("/posts", postsRoute);
@@ -18,4 +18,4 @@ router.use("/writers", writersRoute);
 router.use("/admins", adminsRoute);
 router.use("/debug", debugRoute);
 
-module.exports = router;
+export default router;

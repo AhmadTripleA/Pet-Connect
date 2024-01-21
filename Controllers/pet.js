@@ -1,8 +1,8 @@
-const asyncErrorWrapper = require("express-async-handler")
-const User = require('../Models/user');
-const Pet = require('../Models/pet');
-const Post = require("../Models/post");
-const { resErr, deleteImageFile, resMsg } = require('../middlewares/general');
+import asyncErrorWrapper from "express-async-handler";
+import User from '../Models/user.js';
+import Pet from '../Models/pet.js';
+import Post from "../Models/post.js";
+import { resErr, deleteImageFile, resMsg } from '../middlewares/general.js';
 
 const addPet = asyncErrorWrapper(async (req, res, next) => {
     try {
@@ -74,7 +74,7 @@ const deletePet = asyncErrorWrapper(async (req, res, next) => {
     }
 })
 
-module.exports = {
+export default {
     addPet,
     deletePet
 }

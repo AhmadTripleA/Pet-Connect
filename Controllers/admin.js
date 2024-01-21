@@ -1,7 +1,6 @@
-const asyncErrorWrapper = require("express-async-handler")
-const User = require('../Models/user');
-const Pet = require('../Models/pet');
-const Post = require('../Models/post');
+import asyncErrorWrapper from "express-async-handler";
+import User from '../Models/user.js';
+import Post from '../Models/post.js';
 
 const getAllUsers = asyncErrorWrapper(async (req, res, next) => {
     const users = await User.find();
@@ -25,7 +24,7 @@ const getAllPosts = asyncErrorWrapper(async (req, res, next) => {
     res.status(200).json(posts);
 })
 
-module.exports = {
+export default {
     getAllUsers,
     getActiveUsers,
     getAllPosts,

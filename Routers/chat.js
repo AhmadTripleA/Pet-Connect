@@ -1,6 +1,6 @@
-const express = require('express');
-const { parseText } = require('../middlewares/general');
-const chatController = require('../Controllers/chat');
+import express from 'express';
+import { parseText } from '../middlewares/general.js';
+import chatController from '../Controllers/chat.js';
 
 const router = express.Router();
 
@@ -8,4 +8,4 @@ router.post('/newChat', parseText.none(), chatController.newChat);
 router.post('/addParticipants', parseText.none(), chatController.addParticipants);
 router.post('/removeParticipants', parseText.none(), chatController.removeParticipants);
 
-module.exports = router;
+export default router;

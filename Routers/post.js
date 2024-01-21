@@ -1,7 +1,7 @@
-const express = require('express');
-const cont = require('../Controllers/post');
-const { uploadImg, parseText } = require('../middlewares/general');
-const { authUser } = require('../middlewares/userAuth');
+import express from 'express';
+import cont from '../Controllers/post.js';
+import { uploadImg, parseText } from '../middlewares/general.js';
+import { authUser } from '../middlewares/userAuth.js';
 
 const router = express.Router();
 
@@ -22,4 +22,4 @@ router.post('/delete', parseText.none(), authUser, cont.deletePost);
 
 router.get('/', parseText.none(), cont.getPosts)
 
-module.exports = router;
+export default router;

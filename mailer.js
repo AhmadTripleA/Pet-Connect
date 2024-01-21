@@ -1,5 +1,9 @@
-const nodemailer = require("nodemailer");
+/*
+----------THIS MODULE IS NOT WORKING----------
+---------------PLEASE DO NOT USE--------------
 
+
+const nodemailer = require("nodemailer");
 
 var SibApiV3Sdk = require('sib-api-v3-sdk');
 var defaultClient = SibApiV3Sdk.ApiClient.instance;
@@ -62,3 +66,5 @@ module.exports = {
 
 
 // sendRandomShit().catch(console.error);
+
+*/

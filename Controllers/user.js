@@ -1,9 +1,9 @@
-const asyncErrorWrapper = require("express-async-handler")
-const User = require('../Models/user');
-const Pet = require('../Models/pet');
-const Post = require('../Models/post');
-const bcrypt = require('bcrypt'); // For hashing passwords
-const { resErr, resMsg, deleteImageFile } = require('../middlewares/general');
+import asyncErrorWrapper from 'express-async-handler';
+import bcrypt from 'bcrypt';
+import User from '../Models/user.js';
+import Pet from '../Models/pet.js';
+import Post from '../Models/post.js';
+import { resErr, resMsg, deleteImageFile } from '../middlewares/general.js';
 
 const addAccount = asyncErrorWrapper(async (req, res, next) => {
     const { name, email, password } = req.body;
@@ -185,7 +185,7 @@ const deleteAccount = asyncErrorWrapper(async (req, res, next) => {
 
 })
 
-module.exports = {
+export default {
     addAccount,
     addPhone,
     deletePhone,
